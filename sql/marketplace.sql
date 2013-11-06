@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `file_content` (
 CREATE TABLE IF NOT EXISTS `mp_content` (
   `content_id` varchar(32) NOT NULL,
   `content_txt` text,
-  `ckey` enum('marktplatz','links','team','impressum','datenschutz','nutzungsbedingungen','faq') NOT NULL,
+  `ckey` enum('welcome','marketplace','links','team','impressum','datenschutz','nutzungsbedingungen','faq') NOT NULL,
   PRIMARY KEY  (`content_id`),
   UNIQUE KEY `key` (`ckey`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -143,7 +143,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(255) NOT NULL,
   `perm` enum('user','author','admin') NOT NULL default 'user',
   `locked` tinyint(2) NOT NULL default '0',
-  'auth' varchar(30) NOT NULL default 'standard',
+  `auth` varchar(30) NOT NULL default 'standard',
   PRIMARY KEY  (`user_id`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -159,4 +159,10 @@ CREATE TABLE IF NOT EXISTS `user_plugins` (
   `user_id` varchar(32) NOT NULL,
   `plugin_id` varchar(32) NOT NULL,
   PRIMARY KEY  (`user_id`,`plugin_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `last_plugin_change` (
+  `id` MEDIUMINT NOT NULL AUTO_INCREMENT,
+  `date` int(20) default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
