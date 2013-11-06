@@ -241,7 +241,7 @@ class MPDBM {
         function GetDirContents($dir){
                 ini_set("max_execution_time",100);
                 if (!is_dir($dir)) {
-            $this->error_str = sprintf("Fehler! kein g&uuml;ltiges Verzeichnis: %s!",$dir);
+            $this->error_str = sprintf("Error! not a valid directory: %s!",$dir);
             return FALSE;
         }
                 if ($root=@opendir($dir)){
@@ -264,19 +264,19 @@ class MPDBM {
                 $zipname = basename($zipfile).".zip";
 
                 if ($zipfile_size > 50000 * 1024) {
-                        $this->error_str = "Die hochgeladene ZIP-Datei ist zu gross!";
+                        $this->error_str = "The uploaded ZIP-File is too big!";
             return FALSE;
         }
 
                 if (!@copy($zipfile, $this->tmp_path."/$zipname")) {
-            $this->error_str = "Fehler beim Kopieren des ZIP-Archivs!";
+            $this->error_str = "Error copying of the ZIP-Archive!";
             return FALSE;
         }
 
                 // ZIP-Testing...
                 exec("unzip -t ".$this->tmp_path."/$zipname 2>&1", $out, $err);
                 if ($err) {
-            $this->error_str = "Fehler im ZIP-Archiv!"."unzip -t ".$this->tmp_path."/$zipname 2>&1";
+            $this->error_str = "Error in ZIP-Archive!"."unzip -t ".$this->tmp_path."/$zipname 2>&1";
             return FALSE;
         }
 
@@ -286,7 +286,7 @@ class MPDBM {
                 // ZIP-Auspacking...
                 exec("unzip -jno ".$this->tmp_path."/$zipname -d $zipdir 2>&1", $out, $err);
                 if ($err) {
-            $this->error_str = "Fehler beim Entpacken des ZIP-Archivs!";
+            $this->error_str = "Error extracting the ZIP archive!";
             return FALSE;
         }
 
@@ -309,7 +309,7 @@ class MPDBM {
 
                         if (filesize($val)==0) {
                                 $not_good++;
-                                $this->error_str .= sprintf("Fehler beim hochladen des Fotos: %s Dateigr&ouml;sse 0 Byte!",basename($val));
+                                $this->error_str .= sprintf("Failed to upload Image: %s file-size 0 Byte!",basename($val));
                                 unlink($val);
                                 continue;
                         }
@@ -336,7 +336,7 @@ class MPDBM {
                         }
                         unlink($val);
                 }
-                $this->error_str .= sprintf("%d Bild(er) hochgeladen / %d Problem(e)",$good,$not_good);
+                $this->error_str .= sprintf("%d image uploaded / %d problems",$good,$not_good);
                 rmdir($zipdir);
                 unlink($this->tmp_path."/$zipname");
                 return TRUE;
@@ -361,7 +361,7 @@ class MPDBM {
                 $newfile = $uploaddir . "/".$file_id;
                 if(!@copy($img,$newfile)) {
                     @unlink($newfile);
-                    $this->error_str = "Error 4: " . sprintf(_("Es ist ein Fehler beim Kopieren der Datei %s aufgetreten. Die Datei wurde nicht hochgeladen!"),$img);
+                    $this->error_str = "Error 4: " . sprintf(_("There is an error occurred while copying the file %s. The file is not uploaded!"),$img);
                                 return FALSE;
                 }
             }
@@ -381,12 +381,12 @@ class MPDBM {
 
                 $msg = "";
                 if ($img_size > ($max_file_size*1024)) { //Bilddatei ist zu groß
-                        $this->error_str = "Error 1: " . sprintf(_("Die hochgeladene Bilddatei ist %s KB gro&szlig;.<br>Die maximale Dateigr&ouml;&szlig;e betr&auuml;gt %s KB!"), round($img_size/1024), $max_file_size);
+                        $this->error_str = "Error 1: " . sprintf(_("The uploaded image file is %s KB.<br>The maximum file size should be %s KB!"), round($img_size/1024), $max_file_size);
                         return FALSE;
                 }
 
                 if (!$img_name) { //keine Datei ausgewählt!
-                        $this->error_str = "Error 2: " . _("Sie haben keine Datei zum Hochladen ausgew&auml;hlt!");
+                        $this->error_str = "Error 2: " . _("You have not selected a file to upload!");
                         return FALSE;
                 }
 
@@ -398,7 +398,7 @@ class MPDBM {
                 }
                 //passende Endung ?
                 if ($ext != "jpg" && $ext != "gif" && $ext != "png") {
-                        $this->error_str = sprintf(_("Der Dateityp der Bilddatei ist falsch (%s).<br>Es sind nur die Dateiendungen .gif, .png und .jpg erlaubt!§"), $ext);
+                        $this->error_str = sprintf(_("The file type of the image file is incorrect (%s).<br>Only the file endings .gif, .png und .jpg are allowed!§"), $ext);
                         return FALSE;
                 }
 
@@ -408,7 +408,7 @@ class MPDBM {
                 if(!@copy($img,$newfile) || !@copy($img,$newfile_thumb)) {
                         @unlink($newfile);
                         @unlink($newfile_thumb);
-                        $this->error_str = "Error 4: " . sprintf(_("Es ist ein Fehler beim Kopieren der Datei %s aufgetreten. Das Bild wurde nicht hochgeladen!"),$img);
+                        $this->error_str = "Error 4: " . sprintf(_("There is an error occurred while copying the file %s. The image was not uploaded!"),$img);
                         return FALSE;
                 } else {
                         list($width, $height, $img_type, ) = @getimagesize($img);
@@ -442,7 +442,7 @@ $img_res = ImageCreateTrueColor($newwidth, $newheight);
                                                 $img_org = FALSE;
                                         } // end switch
                                         if (!$img_org) {
-                                                $this->error_str = "Error 5: " . _("Es ist ein Fehler beim Kopieren der Datei aufgetreten. Das Bild wurde nicht hochgeladen!");
+                                                $this->error_str = "Error 5: " . _("There was an error copying the file. The image was not uploaded!");
                                                 @unlink($newfile);
                                                 @unlink($newfile_thumb);
                                                 return FALSE;
@@ -459,7 +459,7 @@ $img_res = ImageCreateTrueColor($newwidth, $newheight);
                                 if ($ret_val){
                                         @unlink($newfile);
                                         @unlink($newfile_thumb);
-                                        $this->error_str= "Error 6:" . _("Es ist ein Fehler beim Kopieren der Datei aufgetreten. Das Bild wurde nicht hochgeladen!");
+                                        $this->error_str= "Error 6:" . _("There was an error copying the file. The image was not uploaded!");
                                         return FALSE;
                                 }
                         }
@@ -488,7 +488,7 @@ $img_res = ImageCreateTrueColor($newwidth, $newheight);
                                                 $img_org = FALSE;
                                         } // end switch
                                         if (!$img_org) {
-                                                $this->error_str = "Error 7: " . _("Es ist ein Fehler beim Kopieren der Datei aufgetreten. Das Bild wurde nicht hochgeladen!");
+                                                $this->error_str = "Error 7: " . _("There was an error copying the file. The image was not uploaded!");
                                                 @unlink($newfile);
                                                 @unlink($newfile_thumb);
                                                 return FALSE;
@@ -505,7 +505,7 @@ $img_res = ImageCreateTrueColor($newwidth, $newheight);
                                 if ($ret_val){
                                         @unlink($newfile);
                                         @unlink($newfile_thumb);
-                                        $this->error_str = "Error 8: " . _("Es ist ein Fehler beim Kopieren der Datei aufgetreten. Das Bild wurde nicht hochgeladen!");
+                                        $this->error_str = "Error 8: " . _("There was an error copying the file. The image was not uploaded!");
                                         return $msg;
                                 }
                         }
@@ -590,9 +590,17 @@ $img_res = ImageCreateTrueColor($newwidth, $newheight);
     }
     
     public function getPluginManifest($pluginpath) {
-                $manifest = @file($pluginpath . '/plugin.manifest');
+                //$manifest = @file($pluginpath . '/manifest.xml');
                 $result = array();
+                
+                $xml=simplexml_load_file($pluginpath . '/Manifest.xml');
+                
+                $result['name'] =  $xml['name']; //"Admin";//$xml->attributes()->name;
+                $result['version'] = $xml['version']; //"1.5";//$xmlattributes()->version;
+                $result['server'] = $xml->server;
+                $result['type'] = $xml->type;
 
+                /*
                 if ($manifest !== false) {
                         foreach ($manifest as $line) {
                                 list($key, $value) = explode('=', $line);
@@ -610,6 +618,7 @@ $img_res = ImageCreateTrueColor($newwidth, $newheight);
                                 }
                         }
                 }
+                */
 
                 return $result;
         }
@@ -649,19 +658,19 @@ $img_res = ImageCreateTrueColor($newwidth, $newheight);
                 $zipname = basename($zipfile).".zip";
 
                 if ($zipfile_size > 50000 * 1024) {
-                        $this->error_str = "Die hochgeladene ZIP-Datei ist zu gross!";
+                        $this->error_str = "The uploaded ZIP-File is to big!";
             return FALSE;
         }
 
                 if (!@copy($zipfile, $this->tmp_path."/$zipname")) {
-            $this->error_str = "Fehler beim Kopieren des ZIP-Archivs!";
+            $this->error_str = "Error copying the ZIP-Archive!";
             return FALSE;
         }
 
                 // ZIP-Testing...
                 exec("unzip -t ".$this->tmp_path."/$zipname 2>&1", $out, $err);
                 if ($err) {
-            $this->error_str = "Fehler im ZIP-Archiv!"."unzip -t ".$this->tmp_path."/$zipname 2>&1";
+            $this->error_str = "Error in ZIP-Archive!"."unzip -t ".$this->tmp_path."/$zipname 2>&1";
             return FALSE;
         }
 
@@ -671,7 +680,7 @@ $img_res = ImageCreateTrueColor($newwidth, $newheight);
                 // ZIP-Auspacking...
                 exec("unzip -jno ".$this->tmp_path."/$zipname -d $zipdir 2>&1", $out, $err);
                 if ($err) {
-            $this->error_str = "Fehler beim Entpacken des ZIP-Archivs!";
+            $this->error_str = "Error extracting the ZIP-Archive!";
             return FALSE;
         }
 
@@ -679,32 +688,38 @@ $img_res = ImageCreateTrueColor($newwidth, $newheight);
 
         $manifest = array();
                 if (!is_array($files)) {
-            $this->error_str = "Keine Dateien im ZIP-Archiv gefunden!";
+            $this->error_str = "No files were found in Zip-Archive!";
             $this->rmdirr($zipdir);
             unlink($this->tmp_path."/$zipname");
             return FALSE;
         } else {
             $manifest = $this->getPluginManifest($zipdir);
             if (count($manifest) == 0) {
-                $this->error_str = "Kein Manifest gefunden!";
+                $this->error_str = "No Manifest was found!";
                 $this->rmdirr($zipdir);
                 unlink($this->tmp_path."/$zipname");
                 return FALSE;
             } else {
                 $studip_version_check = "/(\d)(\.\d+)*.*/";
                 $err = array();
-                if (empty($manifest['pluginname'])) $err[] = "pluginname";
-                if (empty($manifest['pluginclassname'])) $err[] = "pluginclassname";
-                if (empty($manifest['origin'])) $err[] = "origin";
+                
+                if (empty($manifest['name'])) $err[] = "name";
+                if (empty($manifest['server'])) $err[] = "server";
+                if (empty($manifest['type'])) $err[] = "type";
+
+                //if (empty($manifest['pluginclassname'])) $err[] = "pluginclassname";
+                //if (empty($manifest['origin'])) $err[] = "origin";
                 if (empty($manifest['version'])) $err[] = "version";
-                if (empty($manifest['studipMinVersion'])) $err[] = "studipMinVersion";
-                if (!empty($manifest['studipMinVersion']) && !preg_match($studip_version_check, $manifest['studipMinVersion'])) $err[] = "studipMinVersion (falsches Format)";
+                //if (empty($manifest['studipMinVersion'])) $err[] = "studipMinVersion";
+                //if (!empty($manifest['studipMinVersion']) && !preg_match($studip_version_check, $manifest['studipMinVersion'])) $err[] = "studipMinVersion (falsches Format)";
+                
                 if (count($err)) {
-                    $this->error_str = "Folgende Angaben fehlen im Manifest: ".join(', ',$err);
+                    $this->error_str = "The following information is not in the manifest: ".join(', ',$err);
                     $this->rmdirr($zipdir);
                     unlink($this->tmp_path."/$zipname");
                     return FALSE;
                 }
+                
             }
         }
                 $this->rmdirr($zipdir);

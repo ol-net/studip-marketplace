@@ -74,20 +74,25 @@ class XmlExporter
 
             if($releases !== false) {
                 $plugin = $plugins->appendChild($doc->createElement('plugin'));
+                $plugin->setAttribute('id', rawurlencode($p->getPluginId()));
                 $plugin->setAttribute('name', rawurlencode($p->getName()));
-                $plugin->setAttribute('homepage', rawurlencode($p->getUrl()));
+                $plugin->setAttribute('origin', rawurlencode($p->getUrl()));
                 $plugin->setAttribute('description', self::xmlReady($p->getDescription()));
+                $plugin->setAttribute('date', self::xmlReady($p->getMkdate()));
+
                 if ($s = $p->getTitleScreen()) {
-                    $plugin->setAttribute('image', $GLOBALS['BASE_URI'] . '?dispatch=download&file_id=' . $s->getFileId());
+                    $plugin->setAttribute('thumbnail', $GLOBALS['BASE_URI'] . '?dispatch=download&file_id=' . $s->getFileId());
                 }
-                $plugin->setAttribute('score', 'TODO');
+                //$plugin->setAttribute('score', 'TODO');
 
                 foreach ($releases as $rel) {
                     $release = $plugin->appendChild($doc->createElement('release'));
                     $release->setAttribute('version', $rel->getVersion());
-                    $release->setAttribute('studipMinVersion', $rel->getStudipMinVersion());
-                    $release->setAttribute('studipMaxVersion', $rel->getStudipMaxVersion());
-                    $release->setAttribute('url', $GLOBALS['BASE_URI'] . '?dispatch=download&file_id=' . $rel->getFileId());
+                    $release->setAttribute('server', $rel->getServer());
+                    $release->setAttribute('type', $rel->getType());
+                    //$release->setAttribute('studipMinVersion', $rel->getStudipMinVersion());
+                    //$release->setAttribute('studipMaxVersion', $rel->getStudipMaxVersion());
+                    $release->setAttribute('file', $GLOBALS['BASE_URI'] . '?dispatch=download&file_id=' . $rel->getFileId());
                 }
             }
         }

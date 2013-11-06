@@ -24,7 +24,6 @@
 
 class Content
 {
-
     private $content_id = '';
     private $content_txt = '';
     private $key = '';
@@ -64,10 +63,10 @@ class Content
     }
 
     public function save()
-    {
+    { 	
         $query = "UPDATE mp_content SET content_txt = ? WHERE ckey = ?";
         $statement = DBManager::get()->prepare($query);
         $statement->execute(array($this->content_txt, $this->key));
     }
-
 }
+?>

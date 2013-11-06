@@ -2,14 +2,14 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <link rel="shortcut icon" type="image/x-icon"  href="<?= $GLOBALS['BASE_URI'] ?>images/icons/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon"  href="<?= $GLOBALS['BASE_URI'] ?>images/icons/favicon_mh.ico">
 <? if ($GLOBALS['USER'] && $GLOBALS['REFRESH']) : ?>
     <meta http-equiv="refresh" content="<?= $GLOBALS['REFRESH'] * 60 ?>; URL='?dispatch=logout'">
 <? endif ?>
-    <title>Stud.IP Plugin Marktplatz</title>
-    <link rel="stylesheet" href="<?= $GLOBALS['BASE_URI'] ?>css/newstyle/style.css" type="text/css" media="screen">
-    <link rel="stylesheet" href="<?= $GLOBALS['BASE_URI'] ?>css/newstyle/style_content.css" type="text/css" media="screen">
-    <link rel="stylesheet" href="<?= $GLOBALS['BASE_URI'] ?>css/basis.css" type="text/css">
+    <title>Opencast Matterhorn Plugin Marketplace</title>
+    <link rel="stylesheet" href="<?= $GLOBALS['BASE_URI'] ?>css/mh/style.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="<?= $GLOBALS['BASE_URI'] ?>css/mh/style_content.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="<?= $GLOBALS['BASE_URI'] ?>css/mh/basis.css" type="text/css">
     <link rel="stylesheet" href="<?= $GLOBALS['BASE_URI'] ?>css/tagcloud.css" type="text/css">
     <link rel="stylesheet" href="<?= $GLOBALS['BASE_URI'] ?>css/jquery/jquery.ui.all.css" type="text/css">
     <link rel="stylesheet" href="<?= $GLOBALS['BASE_URI'] ?>css/jquery.lightbox-0.5.css" type="text/css" media="screen">

@@ -30,10 +30,11 @@ foreach($_never_globalize_request_params as $one_param){
 }
 
 require_once dirname(__FILE__).'/../classes/Session.class.php';
+
 require_once dirname(__FILE__).'/language.inc.php';
 
-$SUPPORT_ADDRESS = 'tleilax+marketplace@gmail.com';
-$SERVER_NAME = 'plugins.studip.de';
+$SUPPORT_ADDRESS = 'your e-mail adress';
+$SERVER_NAME = 'your host';
 $REFRESH = 0; // Minuten
 Session::get()->startSession();
 if (!$_SESSION['msg_type'])
@@ -42,8 +43,8 @@ if (!$_SESSION['msg_type'])
 $INSTALLED_LANGUAGES["de_DE"] = array ("path"=>"de", "picture"=>"lang_de.gif", "name"=>"Deutsch");
 $INSTALLED_LANGUAGES["en_GB"] = array ("path"=>"en", "picture"=>"lang_en.gif", "name"=>"English");
 
-$DEFAULT_LANGUAGE = "de_DE";  // which language should we use if we can gather no information from user?
-$_language_path = 'de';
+$DEFAULT_LANGUAGE = "en_GB";  // which language should we use if we can gather no information from user?
+$_language_path = 'en';
 
 $_language_domain = "marketplace";
 

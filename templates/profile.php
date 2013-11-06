@@ -14,7 +14,7 @@
 <? endif ?>
 <? if ($u->getWorkplace()) : ?>
         <TR>
-          <TD><SPAN STYLE="font-size:12px; font-weight:bold;">Arbeitsstelle: </SPAN></TD><TD><?=htmlReady($u->getWorkplace())?></TD>
+          <TD><SPAN STYLE="font-size:12px; font-weight:bold;">Institution: </SPAN></TD><TD><?=htmlReady($u->getWorkplace())?></TD>
         </TR>
 <? endif ?>
       </TABLE>
@@ -23,7 +23,7 @@
 <? if ($GLOBALS['USER'] && $GLOBALS['USER']['user_id'] == $user_id) : ?>
   <TR>
     <TD COLSPAN="2" STYLE="text-align:center;">
-      <A HREF="?dispatch=edit_profile"><IMG <?=makeButton('bearbeiten','src')?>></A>
+      <A HREF="?dispatch=edit_profile"><IMG <?=makeButton('edit','src')?>></A>
     </TD>
   </TR>
 <? endif ?>

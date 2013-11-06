@@ -13,7 +13,7 @@ var updateCharsLeft = function() {
 
 var checkInputLength = function() {
         if ($('short_description').value.length > charslimitation) {
-                alert("<?=_("Die Eingabe ist zu lang, bitte kürzen!")?>");
+                alert("<?=_("The input is too long, please reduce!")?>");
                 return false;
         } else {
                 return true;
@@ -23,21 +23,21 @@ var checkInputLength = function() {
 var checkInput = function(part) {
     if (part == '1') {
         if ($('titel').value == '' || $('license').value == '') {
-                    alert('Bitte füllen Sie alle Pflichtfelder aus!');
+                    alert('Please fill in all required fields!');
                     return false;
         } else {
             return true;
         }
     } else if (part == '2') {
         if (jQuery(':hidden[class="sel_categories"]').length == 0) {
-            alert('Bitte füllen Sie alle Pflichtfelder aus!');
+            alert('Please fill in all required fields!');
             return false;
         } else {
             return true;
         }
     } else if (part == '3') {
         if ($('short_description').value == '') {
-            alert('Bitte füllen Sie alle Pflichtfelder aus!');
+            alert('Please fill in all required fields!');
             return false;
         } else {
             return checkInputLength();
@@ -80,7 +80,7 @@ var addCategory = function(cid) {
 <TABLE BORDER=0 WIDTH="100%">
   <TR>
     <TD COLSPAN=2>
-      <?=MessageBox::info(_("F&uuml;llen Sie alle mit einem roten Sternchen markierten Felder aus, um Ihr Plugin zu beschreiben. Alle anderen Felder sind optional.<BR><BR>Schritt ".$part." von 4"))?>
+      <?=MessageBox::info(_("Fill in all fields marked with a red asterisk to describe your plugin. All other fields are optional.<BR><BR>step ".$part." of 4"))?>
     </TD>
   </TR>
 <? if ($part == 1) : ?>
@@ -92,18 +92,18 @@ var addCategory = function(cid) {
 <? endforeach ?>
   <TR>
     <TD COLSPAN=2>
-      <DIV CLASS="topic">Grunddaten: <SPAN STYLE="color:red; font-weight:bold;">*</SPAN></DIV>
+      <DIV CLASS="topic">Basic-Data: <SPAN STYLE="color:red; font-weight:bold;">*</SPAN></DIV>
     </TD>
   </TR>
   <TR>
-    <TD STYLE="width:150px; vertical-align:top; font-weight:bold; font-size:12px;">Titel: </TD>
+    <TD STYLE="width:150px; vertical-align:top; font-weight:bold; font-size:12px;">Title: </TD>
     <TD><INPUT TYPE="text" STYLE="width:500px" MAXLENGTH=255 NAME="titel" ID="titel" VALUE="<?=htmlReady($titel)?>"> <SPAN STYLE="color:red; font-weight:bold;">*</SPAN></TD>
   </TR>
   <TR>
-    <TD STYLE="width:150px; vertical-align:top; font-weight:bold; font-size:12px;">Lizenz: </TD>
+    <TD STYLE="width:150px; vertical-align:top; font-weight:bold; font-size:12px;">Licence: </TD>
     <TD>
       <SELECT NAME="template" STYLE="width:230px;" SIZE="1" onChange="document.plugin.license.value=document.plugin.template[document.plugin.template.selectedIndex].value;">
-        <OPTION VALUE=""><?=_("ausw&auml;hlen oder wie Eingabe")?> --&gt;</OPTION>
+        <OPTION VALUE=""><?=_("Select or write your own")?> --&gt;</OPTION>
 <? foreach (array('GPL','LGPL','MIT','Apache','Creative Commons') as $l) : ?>
         <OPTION VALUE="<?=$l?>"><?=$l?></OPTION>
 <? endforeach ?>
@@ -112,13 +112,14 @@ var addCategory = function(cid) {
     </TD>
   </TR>
   <TR>
-    <TD STYLE="width:150px; vertical-align:top; font-weight:bold; font-size:12px;">Im Einsatz bei: </TD>
+    <TD STYLE="width:150px; vertical-align:top; font-weight:bold; font-size:12px;">In use at: </TD>
     <TD><INPUT TYPE="text" STYLE="width:500px" MAXLENGTH=255 NAME="in_use" ID="in_use" VALUE="<?=htmlReady($in_use)?>"></TD>
   </TR>
   <TR>
     <TD STYLE="width:150px; vertical-align:top; font-weight:bold; font-size:12px;">Homepage-URL: </TD>
     <TD><INPUT TYPE="text" STYLE="width:500px" MAXLENGTH=2000 NAME="url" ID="url" VALUE="<?=htmlReady($url)?>"></TD>
   </TR>
+  <!--
   <TR>
     <TD STYLE="width:150px; vertical-align:top; font-weight:bold; font-size:12px;">Sprache: </TD>
     <TD>
@@ -127,8 +128,9 @@ var addCategory = function(cid) {
       <INPUT TYPE="radio" NAME="language" VALUE="de_en" <?=($language == 'de_en' ? 'CHECKED' : '')?>><IMG SRC="images/languages/lang_de_en.gif" ALT="Deutsch/Englisch" TITLE="Deutsch/Englisch">
     </TD>
   </TR>
+  -->
   <TR>
-    <TD COLSPAN=2 STYLE="text-align:center;"><IMG <?=makeButton('weiter','src')?> STYLE="cursor:pointer;" onClick="if (checkInput('1')){document.plugin.part.value='2'; document.plugin.submit();}"></TD>
+    <TD COLSPAN=2 STYLE="text-align:center;"><IMG <?=makeButton('next','src')?> STYLE="cursor:pointer;" onClick="if (checkInput('1')){document.plugin.part.value='2'; document.plugin.submit();}"></TD>
   </TR>
 <? endif ?>
 <? if ($part == 2) : ?>
@@ -141,23 +143,23 @@ var addCategory = function(cid) {
 <INPUT TYPE="hidden" NAME="description" VALUE="<?=htmlReady($description)?>">
   <TR>
     <TD COLSPAN=2>
-      <DIV CLASS="topic">Kategorien: <SPAN STYLE="color:red; font-weight:bold;">*</SPAN></DIV>
+      <DIV CLASS="topic">Category: <SPAN STYLE="color:red; font-weight:bold;">*</SPAN></DIV>
       <TABLE BORDER=0 WIDTH="100%">
         <TR>
           <TD WIDTH="50%" STYLE="vertical-align:top;">
-            <DIV CLASS="category_head">Bestehende Zuordnungen:</DIV>
+            <DIV CLASS="category_head">Existing Assignments:</DIV>
             <DIV ID="current_categories">
-<? foreach ($categories as $cat) : ?>
-<? $c = $GLOBALS['DBM']->getCategory($cat); ?>
-<DIV ID="c_<?=$c['category_id']?>">
-<IMG SRC="images/trash.gif" onClick="removeCategory('<?=$c['category_id']?>');" STYLE="cursor:pointer;">&nbsp;<?=$c['name']?>
-<INPUT TYPE="hidden" NAME="c_ids[]" CLASS="sel_categories" VALUE="<?=$c['category_id']?>">
-</DIV>
-<? endforeach ?>
+			<? foreach ($categories as $cat) : ?>
+			<? $c = $GLOBALS['DBM']->getCategory($cat); ?>
+			<DIV ID="c_<?=$c['category_id']?>">
+			<IMG SRC="images/trash.gif" onClick="removeCategory('<?=$c['category_id']?>');" STYLE="cursor:pointer;">&nbsp;<?=$c['name']?>
+			<INPUT TYPE="hidden" NAME="c_ids[]" CLASS="sel_categories" VALUE="<?=$c['category_id']?>">
+			</DIV>
+			<? endforeach ?>
             </DIV>
           </TD>
           <TD WIDTH="50%" STYLE="vertical-align:top;">
-            <DIV CLASS="category_head">Bitte w&auml;hlen:</DIV>
+            <DIV CLASS="category_head">Please select:</DIV>
             <DIV ID="available_categories"><CENTER><IMG SRC="images/wait24trans.gif"></DIV>
           </TD>
         </TR>
@@ -172,7 +174,7 @@ var addCategory = function(cid) {
       <DIV CLASS="topic">Tags:</DIV>
     <INPUT TYPE="text" ID="tagsautocomplete" NAME="tags" VALUE="<?=htmlReady($tags)?>" MAXLENGTH="255" STYLE="width:500px;">
         <div id="tagsautocomplete_choices" class="tagsautocomplete"></div>
-        <BR><SPAN STYLE="font-size:10px;">Tags bitte mit <SPAN STYLE="font-weight:bold;">Komma</SPAN> trennen</SPAN>
+        <BR><SPAN STYLE="font-size:10px;">Please separate tags <SPAN STYLE="font-weight:bold;"> with comma</SPAN></SPAN>
     </TD>
   </TR>
 <script type="text/javascript">
@@ -185,7 +187,7 @@ $j(window).load(function () {
 });
 </script>
   <TR>
-    <TD COLSPAN=2 STYLE="text-align:center;"><IMG <?=makeButton('zurueck','src')?> STYLE="cursor:pointer;" onClick="document.plugin.part.value='1'; document.plugin.submit();">&nbsp;<IMG <?=makeButton('weiter','src')?> STYLE="cursor:pointer;" onClick="if (checkInput('2')){document.plugin.part.value='3'; document.plugin.submit();}"></TD>
+    <TD COLSPAN=2 STYLE="text-align:center;"><IMG <?=makeButton('back','src')?> STYLE="cursor:pointer;" onClick="document.plugin.part.value='1'; document.plugin.submit();">&nbsp;<IMG <?=makeButton('next','src')?> STYLE="cursor:pointer;" onClick="if (checkInput('2')){document.plugin.part.value='3'; document.plugin.submit();}"></TD>
   </TR>
 <? endif ?>
 <? if ($part == 3) : ?>
@@ -201,14 +203,14 @@ $j(window).load(function () {
 <? endforeach ?>
   <TR>
     <TD COLSPAN=2>
-      <DIV CLASS="topic">Kurzbeschreibung: <SPAN STYLE="color:red; font-weight:bold;">*</SPAN></DIV>
-      <SPAN STYLE="font-size:10px; color:gray;">Hier ist nur Plaintext zul&auml;ssig! (max. <script>document.write(charslimitation);</script> Zeichen)</SPAN>
+      <DIV CLASS="topic">Short Description: <SPAN STYLE="color:red; font-weight:bold;">*</SPAN></DIV>
+      <SPAN STYLE="font-size:10px; color:gray;">Here, only plain text is allowed! (max. of <script>document.write(charslimitation);</script> characters)</SPAN>
     </TD>
   </TR>
   <TR>
     <TD COLSPAN=2>
       <TEXTAREA MAXLENGTH="500" NAME="short_description" ID="short_description" STYLE="height:200px; width:100%;" onblur="updateCharsLeft();" onkeydown="updateCharsLeft();" onkeypress="updateCharsLeft();" onkeyup="updateCharsLeft();" onClick="updateCharsLeft();"><?=htmlReady($short_description)?></TEXTAREA>
-      <SPAN STYLE="font-size:12px; font-weight:bold;"><?=_("Zeichen noch verf&uuml;gbar:")?> </SPAN><SPAN ID="chars_left" STYLE="font-size:15px; font-weight:bold; color:gray;"></SPAN><BR>
+      <SPAN STYLE="font-size:12px; font-weight:bold;"><?=_("Characters available:")?> </SPAN><SPAN ID="chars_left" STYLE="font-size:15px; font-weight:bold; color:gray;"></SPAN><BR>
     </TD>
   </TR>
 <script type="text/javascript">
@@ -217,7 +219,7 @@ $j(window).load(function () {
 });
 </script>
   <TR>
-    <TD COLSPAN=2 STYLE="text-align:center;"><IMG <?=makeButton('zurueck','src')?> STYLE="cursor:pointer;" onClick="document.plugin.part.value='2'; document.plugin.submit();">&nbsp;<IMG <?=makeButton('weiter','src')?> STYLE="cursor:pointer;" onClick="if (checkInput('3')){document.plugin.part.value='4'; document.plugin.submit();}"></TD>
+    <TD COLSPAN=2 STYLE="text-align:center;"><IMG <?=makeButton('back','src')?> STYLE="cursor:pointer;" onClick="document.plugin.part.value='2'; document.plugin.submit();">&nbsp;<IMG <?=makeButton('next','src')?> STYLE="cursor:pointer;" onClick="if (checkInput('3')){document.plugin.part.value='4'; document.plugin.submit();}"></TD>
   </TR>
 <? endif ?>
 <? if ($part == 4) : ?>
@@ -232,13 +234,13 @@ $j(window).load(function () {
 <INPUT TYPE="hidden" NAME="c_ids[]" VALUE="<?=$c?>">
 <? endforeach ?>
   <TR>
-    <TD COLSPAN=2><DIV CLASS="topic">Beschreibung:</DIV></TD>
+    <TD COLSPAN=2><DIV CLASS="topic">Description:</DIV></TD>
   </TR>
   <TR>
     <TD COLSPAN=2><TEXTAREA NAME="description" ID="description" class="mceAdvanced" STYLE="height:300px; width:100%;"><?=htmlReady($description)?></TEXTAREA></TD>
   </TR>
   <TR>
-    <TD COLSPAN=2 STYLE="text-align:center;"><IMG <?=makeButton('zurueck','src')?> STYLE="cursor:pointer;" onClick="document.plugin.part.value='3'; document.plugin.submit();">&nbsp;<IMG <?=makeButton('fertigstellen','src')?> STYLE="cursor:pointer;" onClick="document.plugin.part.value='5'; document.plugin.submit();"></TD>
+    <TD COLSPAN=2 STYLE="text-align:center;"><IMG <?=makeButton('back','src')?> STYLE="cursor:pointer;" onClick="document.plugin.part.value='3'; document.plugin.submit();">&nbsp;<IMG <?=makeButton('create','src')?> STYLE="cursor:pointer;" onClick="document.plugin.part.value='5'; document.plugin.submit();"></TD>
   </TR>
 
 <? endif ?>
@@ -246,5 +248,5 @@ $j(window).load(function () {
     <TD COLSPAN=2>&nbsp;</TD>
   </TR>
 </TABLE>
-<SPAN STYLE="color:red; font-weight:bold;">*</SPAN> = Pflichtfeld<BR><BR>
+<SPAN STYLE="color:red; font-weight:bold;">*</SPAN> = Required<BR><BR>
 </FORM>

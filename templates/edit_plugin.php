@@ -14,7 +14,7 @@ var updateCharsLeft = function() {
 
 var checkInputLength = function() {
         if ($('short_description').value.length > charslimitation) {
-                alert("<?=_("Die Eingabe ist zu lang, bitte kürzen!")?>");
+                alert("<?=_("The input is too long, please reduce!")?>");
                 return false;
         } else {
                 return true;
@@ -24,7 +24,7 @@ var checkInputLength = function() {
 
 var checkInput = function() {
     if (jQuery(':hidden[class="sel_categories"]').length == 0 || $('titel').value == '' || $('license').value == '' || $('short_description').value == '') {
-        alert('Bitte füllen Sie alle Pflichtfelder aus!');
+        alert('Please fill in all required fields!');
         return false;
     } else {
         return checkInputLength();
@@ -98,21 +98,21 @@ $j(window).load(function () {
 <INPUT TYPE="hidden" NAME="plugin_id" VALUE="<?=$p->getPluginId()?>">
 <? if ($GLOBALS['PERM']->have_perm('admin')) : ?>
 <FIELDSET STYLE="border:2px solid red; padding:10px;">
-  <LEGEND STYLE="font-weight:bold; font-size:12px;">Admin-Bereich</LEGEND>
+  <LEGEND STYLE="font-weight:bold; font-size:12px;">Admin Area</LEGEND>
   <DIV STYLE="display:inline; float:left; margin-left:4px; text-align:left;">
-    <SPAN STYLE="font-weight:bold; font-size:12px;">Benutzer zuweisen: </SPAN>
+    <SPAN STYLE="font-weight:bold; font-size:12px;">Assign Users: </SPAN>
     <SELECT NAME="new_user_id" ID="new_user_id" SIZE="1" STYLE="width:150px;">
 <? foreach ($GLOBALS['DBM']->getAllUsers() as $u) : ?>
      <OPTION VALUE="<?=$u->getUserId()?>" <?=($u->getUserId() == $p->getUserId() ? " SELECTED STYLE=\"color:gray;\"" : "")?>><?=htmlReady(UserManagement::getFullnameByUserId($u->getUserId()))?> (<?=htmlReady($u->getUsername())?>)</OPTION>
 <? endforeach ?>
-    </SELECT>&nbsp;<IMG <?=makeButton('zuweisen','src')?> STYLE="cursor:pointer;" onClick="location.href='?dispatch=set_plugin_user&plugin_id=<?=$p->getPluginId()?>&user_id='+$('new_user_id').value;">
+    </SELECT>&nbsp;<IMG <?=makeButton('assign','src')?> STYLE="cursor:pointer;" onClick="location.href='?dispatch=set_plugin_user&plugin_id=<?=$p->getPluginId()?>&user_id='+$('new_user_id').value;">
   </DIV>
-  <DIV STYLE="display:inline; float:right; margin-left:4px; text-align:right;"><IMG <?=makeButton('rezension','src')?> onClick="location.href='?dispatch=edit_rezension&plugin_id=<?=$p->getPluginId()?>'"></DIV>
+  <DIV STYLE="display:inline; float:right; margin-left:4px; text-align:right;"><IMG <?=makeButton('review','src')?> onClick="location.href='?dispatch=edit_rezension&plugin_id=<?=$p->getPluginId()?>'"></DIV>
   <DIV STYLE="display:inline; float:right; text-align:right;">
 <? if ($p->getApproved() == 0) : ?>
-    <IMG <?=makeButton('freischalten','src')?> onClick="location.href='?dispatch=do_clearing&plugin_id=<?=$p->getPluginId()?>'">
+    <IMG <?=makeButton('activate','src')?> onClick="location.href='?dispatch=do_clearing&plugin_id=<?=$p->getPluginId()?>'">
 <? else : ?>
-    <IMG <?=makeButton('sperren','src')?> onClick="if (confirm('Soll dieses Plugin wirklich gesperrt werden?')){location.href='?dispatch=do_suspend&plugin_id=<?=$p->getPluginId()?>'}">
+    <IMG <?=makeButton('block','src')?> onClick="if (confirm('Really block plugin?')){location.href='?dispatch=do_suspend&plugin_id=<?=$p->getPluginId()?>'}">
 <? endif ?>
   </DIV>
 <!-- SPAN STYLE="font-weight:bold; font-size:12px;">Klassifikation: </SPAN>
@@ -127,21 +127,21 @@ $j(window).load(function () {
   <TR>
     <TD COLSPAN=2>
 <? if (!$p->getApproved() && $p->getPluginId()) : ?>
-      <!-- DIV STYLE="float:right;"><IMG SRC="images/icons/delete.png" ALT="Plugin noch nicht freigegeben" TITLE="Plugin noch nicht freigegeben"></DIV -->
-      <?=MessageBox::error("Das Plugin ist noch nicht freigegeben. Die Freigabe erfolgt durch einen Pluginbeauftragten.")?>
+      <!-- DIV STYLE="float:right;"><IMG SRC="images/icons/delete.png" ALT="Plugin still not released!" TITLE="Plugin still not released!"></DIV -->
+      <?=MessageBox::error("The plugin still not released!")?>
 <? endif ?>
 <? if (!$p->getPluginId()) : ?>
-      <?=MessageBox::info(_("F&uuml;llen Sie alle mit einem roten Sternchen markierten Felder aus, um Ihr Plugin zu beschreiben. Alle anderen Felder sind optional."))?>
+      <?=MessageBox::info(_("Fill in all fields marked with a red asterisk to describe your plugin. All other fields are optional."))?>
 <? endif ?>
       <DIV STYLE="clear:both;"></DIV>
-      <DIV CLASS="topic">Grunddaten: <SPAN STYLE="color:red; font-weight:bold;">*</SPAN></DIV>
+      <DIV CLASS="topic">Basic-Data: <SPAN STYLE="color:red; font-weight:bold;">*</SPAN></DIV>
     </TD>
   </TR>
 <? if ($p->getPluginId()) : ?>
   <TR>
-    <TD STYLE="font-size:12px; font-weight:bold; vertical-align:top;">Autor: </TD><TD><?=Avatar::getAvatar($p->getUserId())->getImageTag(Avatar::SMALL)?> <A HREF="?dispatch=show_profile&username=<?=UserManagement::getUsernameByUserId($p->getUserId())?>&plugin_id=<?=$p->getPluginId()?>"><?=UserManagement::getFullnameByUserId($p->getUserId())?></A></TD>
+    <TD STYLE="font-size:12px; font-weight:bold; vertical-align:top;">Author: </TD><TD><?=Avatar::getAvatar($p->getUserId())->getImageTag(Avatar::SMALL)?> <A HREF="?dispatch=show_profile&username=<?=UserManagement::getUsernameByUserId($p->getUserId())?>&plugin_id=<?=$p->getPluginId()?>"><?=UserManagement::getFullnameByUserId($p->getUserId())?></A></TD>
   </TR>
-  <TR><TD STYLE="font-size:12px; font-weight:bold; vertical-align:top;">Mitwirkende: </TD>
+  <TR><TD STYLE="font-size:12px; font-weight:bold; vertical-align:top;">Contributors: </TD>
       <TD STYLE="font-size:12px;">
 <? $parts = array(); ?>
 <? array_push($parts, $p->getUserId()); ?>
@@ -157,19 +157,19 @@ $j(window).load(function () {
          <OPTION VALUE="<?=$u->getUserId()?>"><?=htmlReady(UserManagement::getFullnameByUserId($u->getUserId()))?> (<?=htmlReady($u->getUsername())?>)</OPTION>
          <? endif ?>
 <? endforeach ?>
-       </SELECT>&nbsp;<IMG <?=makeButton('zuweisen','src')?> STYLE="cursor:pointer;" onClick="location.href='?dispatch=set_plugin_participant&plugin_id=<?=$p->getPluginId()?>&user_id='+$('new_participant_id').value;">
+       </SELECT>&nbsp;<IMG <?=makeButton('assign','src')?> STYLE="cursor:pointer;" onClick="location.href='?dispatch=set_plugin_participant&plugin_id=<?=$p->getPluginId()?>&user_id='+$('new_participant_id').value;">
      </TD>
    </TR>
 <? endif ?>
   <TR>
-    <TD STYLE="width:150px; vertical-align:top; font-weight:bold; font-size:12px;">Titel: </TD>
+    <TD STYLE="width:150px; vertical-align:top; font-weight:bold; font-size:12px;">Title: </TD>
     <TD><INPUT TYPE="text" STYLE="width:500px" MAXLENGTH=255 NAME="titel" ID="titel" VALUE="<?=htmlReady($p->getName())?>"> <SPAN STYLE="color:red; font-weight:bold;">*</SPAN></TD>
   </TR>
   <TR>
-    <TD STYLE="width:150px; vertical-align:top; font-weight:bold; font-size:12px;">Lizenz: </TD>
+    <TD STYLE="width:150px; vertical-align:top; font-weight:bold; font-size:12px;">License: </TD>
     <TD>
       <SELECT NAME="template" STYLE="width:230px;" SIZE="1" onChange="document.plugin.license.value=document.plugin.template[document.plugin.template.selectedIndex].value;">
-        <OPTION VALUE=""><?=_("ausw&auml;hlen oder wie Eingabe")?> --&gt;</OPTION>
+        <OPTION VALUE=""><?=_("Select or write your own")?> --&gt;</OPTION>
 <? foreach (array('GPL','LGPL','MIT','Apache','Creative Commons') as $l) : ?>
         <OPTION VALUE="<?=$l?>"><?=$l?></OPTION>
 <? endforeach ?>
@@ -178,13 +178,14 @@ $j(window).load(function () {
     </TD>
   </TR>
   <TR>
-    <TD STYLE="width:150px; vertical-align:top; font-weight:bold; font-size:12px;">Im Einsatz bei: </TD>
+    <TD STYLE="width:150px; vertical-align:top; font-weight:bold; font-size:12px;">In use at: </TD>
     <TD><INPUT TYPE="text" STYLE="width:500px" MAXLENGTH=255 NAME="in_use" ID="in_use" VALUE="<?=htmlReady($p->getInUse())?>"></TD>
   </TR>
   <TR>
     <TD STYLE="width:150px; vertical-align:top; font-weight:bold; font-size:12px;">Homepage-URL: </TD>
     <TD><INPUT TYPE="text" STYLE="width:500px" MAXLENGTH=2000 NAME="url" ID="url" VALUE="<?=htmlReady($p->getUrl())?>"></TD>
   </TR>
+  <!--
   <TR>
     <TD STYLE="width:150px; vertical-align:top; font-weight:bold; font-size:12px;">Sprache: </TD>
     <TD>
@@ -193,20 +194,21 @@ $j(window).load(function () {
       <INPUT TYPE="radio" NAME="language" VALUE="de_en" <?=($p->getLanguage() == 'de_en' ? 'CHECKED' : '')?>><IMG SRC="images/languages/lang_de_en.gif" ALT="Deutsch/Englisch" TITLE="Deutsch/Englisch">
     </TD>
   </TR>
+  -->
   <TR>
     <TD COLSPAN=2><DIV STYLE="margin-top:15px; margin-bottom:15px;"></DIV></TD>
   </TR>
   <TR>
     <TD COLSPAN=2>
-      <DIV CLASS="topic">Kategorien: <SPAN STYLE="color:red; font-weight:bold;">*</SPAN></DIV>
+      <DIV CLASS="topic">Category: <SPAN STYLE="color:red; font-weight:bold;">*</SPAN></DIV>
       <TABLE BORDER=0 WIDTH="100%">
         <TR>
           <TD WIDTH="50%" STYLE="vertical-align:top;">
-            <DIV CLASS="category_head">Bestehende Zuordnungen:</DIV>
+            <DIV CLASS="category_head">Existing Assignments:</DIV>
             <DIV ID="current_categories"><CENTER><IMG SRC="images/wait24trans.gif"></CENTER></DIV>
           </TD>
           <TD WIDTH="50%" STYLE="vertical-align:top;">
-            <DIV CLASS="category_head">Bitte w&auml;hlen:</DIV>
+            <DIV CLASS="category_head">Please Select:</DIV>
             <DIV ID="available_categories"><CENTER><IMG SRC="images/wait24trans.gif"></DIV>
           </TD>
         </TR>
@@ -221,7 +223,7 @@ $j(window).load(function () {
       <DIV CLASS="topic">Tags:</DIV>
     <INPUT TYPE="text" ID="tagsautocomplete" NAME="tags" VALUE="" MAXLENGTH="255" STYLE="width:500px;">
         <div id="tagsautocomplete_choices" class="tagsautocomplete"></div>
-        <BR><SPAN STYLE="font-size:10px;">Tags bitte mit <SPAN STYLE="font-weight:bold;">Komma</SPAN> trennen</SPAN>
+        <BR><SPAN STYLE="font-size:10px;">Please separate tags <SPAN STYLE="font-weight:bold;">with comma</SPAN></SPAN>
 <? if (count($p->getTags()) > 0) : ?>
         <BR><SPAN STYLE="font-size:10px;">|</SPAN>
 <? foreach ($p->getTags() as $t) : ?>
@@ -235,21 +237,21 @@ $j(window).load(function () {
   </TR>
   <TR>
     <TD COLSPAN=2>
-      <DIV CLASS="topic">Kurzbeschreibung: <SPAN STYLE="color:red; font-weight:bold;">*</SPAN></DIV>
-      <SPAN STYLE="font-size:10px; color:gray;">Hier ist nur Plaintext zul&auml;ssig! (max. <script>document.write(charslimitation);</script> Zeichen)</SPAN>
+      <DIV CLASS="topic">Short Description: <SPAN STYLE="color:red; font-weight:bold;">*</SPAN></DIV>
+      <SPAN STYLE="font-size:10px; color:gray;">Here, only plain text is allowed! (max. of <script>document.write(charslimitation);</script> characters)</SPAN>
     </TD>
   </TR>
   <TR>
     <TD COLSPAN=2>
       <TEXTAREA MAXLENGTH="500" NAME="short_description" ID="short_description" STYLE="height:200px; width:100%;" onblur="updateCharsLeft();" onkeydown="updateCharsLeft();" onkeypress="updateCharsLeft();" onkeyup="updateCharsLeft();" onClick="updateCharsLeft();"><?=$p->getShortDescription()?></TEXTAREA>
-      <SPAN STYLE="font-size:12px; font-weight:bold;"><?=_("Zeichen noch verf&uuml;gbar:")?> </SPAN><SPAN ID="chars_left" STYLE="font-size:15px; font-weight:bold; color:gray;"></SPAN><BR>
+      <SPAN STYLE="font-size:12px; font-weight:bold;"><?=_("Characters available:")?> </SPAN><SPAN ID="chars_left" STYLE="font-size:15px; font-weight:bold; color:gray;"></SPAN><BR>
     </TD>
   </TR>
   <TR>
     <TD COLSPAN=2>&nbsp;</TD>
   </TR>
   <TR>
-    <TD COLSPAN=2><DIV CLASS="topic">Beschreibung:</DIV></TD>
+    <TD COLSPAN=2><DIV CLASS="topic">Description:</DIV></TD>
   </TR>
   <TR>
     <TD COLSPAN=2><TEXTAREA NAME="description" ID="description" class="mceAdvanced" STYLE="height:300px; width:100%;"><?=$p->getDescription()?></TEXTAREA></TD>
@@ -258,10 +260,10 @@ $j(window).load(function () {
     <TD COLSPAN=2>&nbsp;</TD>
   </TR>
   <TR>
-    <TD COLSPAN=2 STYLE="text-align:center;"><INPUT TYPE="image" <?=makeButton('speichern','src')?>> <IMG <?=makeButton('abbrechen','src')?> onClick="location.href='?';"> <? if ($p->getPluginId()) : ?><IMG <?=makeButton('loeschen','src')?> onClick="if (confirm('Wollen Sie das Plugin wirklich löschen?')){location.href='?dispatch=remove_plugin&plugin_id=<?=$p->getPluginId()?>';}"><? endif ?></TD>
+    <TD COLSPAN=2 STYLE="text-align:center;"><INPUT TYPE="image" <?=makeButton('save','src')?>> <IMG <?=makeButton('abort','src')?> onClick="location.href='?';"> <? if ($p->getPluginId()) : ?><IMG <?=makeButton('delete','src')?> onClick="if (confirm('Do you really want delete this plugin?')){location.href='?dispatch=remove_plugin&plugin_id=<?=$p->getPluginId()?>';}"><? endif ?></TD>
   </TR>
 </TABLE>
-<SPAN STYLE="color:red; font-weight:bold;">*</SPAN> = Pflichtfeld<BR><BR>
+<SPAN STYLE="color:red; font-weight:bold;">*</SPAN> = Required<BR><BR>
 <? if ($p->getPluginId()) : ?>
 <? if ($releases = $p->getReleases()) : ?>
 <DIV CLASS="topic">Releases:</DIV>
@@ -270,7 +272,7 @@ $j(window).load(function () {
 <? $css->switchClass(); ?>
   <TR CLASS="<?=$css->getClass()?>" <?=$css->getHover()?>>
     <TD CLASS="<?=$css->getClass()?>"><A HREF="?dispatch=edit_release&release_id=<?=$r->getReleaseId()?>&plugin_id=<?=$r->getPluginId()?>">Version <?=$r->getVersion()?></A></TD>
-    <TD ALIGN="right" CLASS="<?=$css->getClass()?>"><IMG <?=makeButton('bearbeiten','src')?> STYLE="cursor:pointer" onClick="location.href='?dispatch=edit_release&release_id=<?=$r->getReleaseId()?>&plugin_id=<?=$p->getPluginId()?>'"> <IMG <?=makeButton('loeschen','src')?> STYLE="cursor:pointer" onClick="if (confirm('Wollen Sie das Release wirklich löschen?')){location.href='?dispatch=remove_release&release_id=<?=$r->getReleaseId()?>&plugin_id=<?=$p->getPluginId()?>'}"></TD>
+    <TD ALIGN="right" CLASS="<?=$css->getClass()?>"><IMG <?=makeButton('edit','src')?> STYLE="cursor:pointer" onClick="location.href='?dispatch=edit_release&release_id=<?=$r->getReleaseId()?>&plugin_id=<?=$p->getPluginId()?>'"> <IMG <?=makeButton('delete','src')?> STYLE="cursor:pointer" onClick="if (confirm('Do you really want delete this release?')){location.href='?dispatch=remove_release&release_id=<?=$r->getReleaseId()?>&plugin_id=<?=$p->getPluginId()?>'}"></TD>
   </TR>
 <? endforeach ?>
 </TABLE>

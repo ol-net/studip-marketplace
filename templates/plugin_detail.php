@@ -35,19 +35,19 @@ Event.observe(window, 'load', function() {
           <TABLE BORDER=0>
             <!-- TR><TD STYLE="font-size:12px; font-weight:bold; vertical-align:top;">Autor: </TD><TD><?=Avatar::getAvatar($p->getUserId())->getImageTag(Avatar::SMALL)?><A HREF="?dispatch=show_profile&username=<?=UserManagement::getUsernameByUserId($p->getUserId())?>&plugin_id=<?=$p->getPluginId()?>"><?=UserManagement::getFullnameByUserId($p->getUserId())?></A></TD><TR -->
 <? if (count($users = $p->getParticipants())) : ?>
-            <TR><TD STYLE="font-size:12px; font-weight:bold; vertical-align:top;">Mitwirkende: </TD>
+            <TR><TD STYLE="font-size:12px; font-weight:bold; vertical-align:top;">Contributers: </TD>
                 <TD STYLE="font-size:12px;">
 <? foreach ($users as $u) : ?>
                   <TABLE BORDER=0><TR><TD STYLE="vertical-align:middle;"><?=Avatar::getAvatar($u->getUserId())->getImageTag(Avatar::SMALL)?></TD><TD STYLE="vertical-align:middle;"> <A HREF="?dispatch=show_profile&username=<?=UserManagement::getUsernameByUserId($u->getUserId())?>&plugin_id=<?=$p->getPluginId()?>"><?=UserManagement::getFullnameByUserId($u->getUserId())?></A></TD></TR></TABLE><BR>
 <? endforeach ?>
                 </TD></TR>
 <? endif ?>
-            <TR><TD STYLE="font-size:12px; font-weight:bold; vertical-align:top;">Eingetragen: </TD><TD STYLE="font-size:12px;"><?=date('d.m.Y',$p->getMkdate())?></TD></TR>
+            <TR><TD STYLE="font-size:12px; font-weight:bold; vertical-align:top;">Date: </TD><TD STYLE="font-size:12px;"><?=date('d.m.Y',$p->getMkdate())?></TD></TR>
 <? if ($url = $p->getUrl()) : ?>
             <TR><TD STYLE="font-size:12px; font-weight:bold; vertical-align:top;">Homepage: </TD><TD><A HREF="<?=htmlReady($url)?>" TARGET="_blank"><!-- IMG SRC="images/icons/world_link.png" --><?=htmlReady($url)?></A></TD></TR>
 <? endif ?>
 <? if ($p->getRezension()) : ?>
-            <TR><TD STYLE="font-size:12px; font-weight:bold; vertical-align:top;">Rezension: </TD><TD><a href="#mpdialog" name="modal" onClick="launchWindow('#mpdialog','<?=$p->getPluginId()?>');">anzeigen</a></TD></TR>
+            <TR><TD STYLE="font-size:12px; font-weight:bold; vertical-align:top;">Review: </TD><TD><a href="#mpdialog" name="modal" onClick="launchWindow('#mpdialog','<?=$p->getPluginId()?>');">show</a></TD></TR>
 <? endif ?>
           </TABLE>
         </DIV>
@@ -65,7 +65,7 @@ Event.observe(window, 'load', function() {
         </DIV>
 <DIV ID="accordion_container">
 <? if ($p->getDescription()) : ?>
-        <H4 CLASS="accordion_toggle">Beschreibung</H4>
+        <H4 CLASS="accordion_toggle">Description</H4>
         <DIV CLASS="accordion_content">
           <?=$p->getDescription()?>
         </DIV>
@@ -112,12 +112,12 @@ $j(window).load(function() {
 <? endif ?>
         </DIV -->
 <? if ($GLOBALS['PERM']->have_plugin_perm('author',$p->getPluginId())) : ?>
-	<DIV STYLE="float:right;"><A HREF="?dispatch=edit_plugin&plugin_id=<?=$p->getPluginId()?>"><?=makeButton('bearbeiten','img')?></A></DIV>
+	<DIV STYLE="float:right;"><A HREF="?dispatch=edit_plugin&plugin_id=<?=$p->getPluginId()?>"><?=makeButton('edit','img')?></A></DIV>
 <? endif ?>
 <? if ($p->getChdate()) : ?>
         <DIV STYLE="clear:both;"></DIV>
         <DIV STYLE="margin-right:15px; font-size:10px; color:gray;">
-          Aktualisiert am <?=date('d.m.Y',$p->getChdate())?>
+          Update on <?=date('d.m.Y',$p->getChdate())?>
         </DIV>
 <? endif ?>
       </TD>

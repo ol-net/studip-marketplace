@@ -53,27 +53,34 @@ if ($dispatch == 'atom') {
     $feed->outputFeed('ATOM1.0');
     die();
 }
+
 if ($dispatch == 'xml') {
     header('Content-type: text/xml', true);
     echo XmlExporter::generatePluginsXml();
     die();
 }
 
+if ($dispatch == 'last_change') {
+    header('Content-type: text/html', true);
+    echo LastPluginChange::load();
+    die();
+} 
+
 if ($dispatch == "logout") {
     Session::get()->destroySession();
     header('HTTP/1.1 303 See Other');
-        header('Location: '.$BASE_URI.'?dispatch=logoutdone');
+    header('Location: '.$BASE_URI.'?dispatch=logoutdone');
 }
 
 if ($dispatch == 'do_login' || $dispatch == 'loginfromdev') {
     if (($dispatch == 'do_login' && !$AUTH->authenticate($_REQUEST['username'],$_REQUEST['passwort'])) || 
         ($dispatch == 'loginfromdev' && !$AUTH->authenticateFromDev(CryptMP::decryptPrivate(base64_decode($_REQUEST['cryptloginkey'])), unserialize(base64_decode($_REQUEST['cryptinformation']))))) {
         $USER = FALSE;
-        setMessage('error',"Fehler bei der Anmeldung! Benutzername oder Passwort ung&uuml;ltig!");
+        setMessage('error',"Login failed! Invalid username or password!");
         $dispatch = 'login';
     } else {
         Session::saveSessionParams();
-        setMessage('info',sprintf('Sie sind nun angemeldet, %s.',$UM->getFullnameByUserId($_SESSION['user_id'])));
+        setMessage('info',sprintf('You are logged in as, %s.',$UM->getFullnameByUserId($_SESSION['user_id'])));
         ob_end_clean();
         header('HTTP/1.1 303 See Other');
         header('Location: '.$BASE_URI);
@@ -95,21 +102,21 @@ if ($dispatch == 'reset_password') {
     include_once 'lib/captcha/securimage.php';
     $securimage = new Securimage();
     if ($securimage->check($_REQUEST['captcha_code']) == false) {
-        setMessage('error','Der Sicherheitscode war nicht korrekt!.');
+        setMessage('error','The security code was incorrect!');
     } else {
         $email = $UM->getEmailByUsername(Request::option('username'));
         if ($email) {
             $u = $UM->getUserByUsername(Request::option('username'));
             if ($u->getAuth() != 'standard') {
-                setMessage('error','Sorry, dieser Account wird von einem anderen System authentifiziert, bitte ändern Sie das Passwort dort!');
+                setMessage('error','Sorry, this account is authenticated by another system, please change the password there!');
             } else {
                 $new_pw = $UM->generate_password();
                 $UM->setPassword($u->getUser(),$new_pw);
                 $GLOBALS['MAIL']->generateResetPasswordMail($u,$new_pw);
-                setMessage('info',"Sie erhalten in K&uuml;rze eine E-Mail mit einem neuen Passwort.");
+                setMessage('info',"You will shortly receive an email with a new password.");
             }
         } else {
-            setMessage('error','Sorry, ein Account mit diesem Usernamen ist unbekannt!');
+            setMessage('error','Sorry, an account with this username is unknown!');
         }
     }
     unset($dispatch);
@@ -118,7 +125,7 @@ if ($dispatch == 'do_register') {
     include_once 'lib/captcha/securimage.php';
     $securimage = new Securimage();
     if ($securimage->check($_REQUEST['captcha_code']) == false) {
-        setMessage('error','Der Sicherheitscode war nicht korrekt!');
+        setMessage('error','The security code was incorrect!');
         $GUI->showRegister();
     } else {
         if (!$UM->userAlreadyExists(trim($_REQUEST['username']))) {
@@ -131,9 +138,9 @@ if ($dispatch == 'do_register') {
                     $_REQUEST['salutation'],
                     $confirmation_token);
             $GLOBALS['MAIL']->generateRegistrationMail($_REQUEST['username'],$_REQUEST['vorname'],$_REQUEST['nachname'],$_REQUEST['email'], $_REQUEST['salutation'],time(), $confirmation_token);
-            setMessage('info',"Vielen Dank f&uuml;r Ihre Anmeldung. Sie erhalten in K&uuml;rze eine E-Mail mit einem Best&auml;tigungslink.");
+            setMessage('info',"Thank you for your registration. You will shortly receive an email with a confirmation link.");
         } else {
-            setMessage('error','Sorry, ein Account mit diesem Usernamen existiert bereits!');
+            setMessage('error','Sorry, that username already exists!');
         }
     }
     unset($dispatch);
@@ -179,7 +186,7 @@ if ($USER) {
               ->setCategories($categories)
               ->setUrl($url)
               ->save();
-            setMessage('info',"Das Plugin wurde eingetragen, jetzt k&ouml;nnen Sie ein Release hochladen.");
+            setMessage('info',"The plugin was added, now you can upload a release!");
             $MAIL->generateNewPluginMails($USER['user_id'],$p);
             $GUI->showEditRelease($p->getPluginId(), FALSE);
         } else {
@@ -191,12 +198,12 @@ if ($USER) {
         include_once 'lib/captcha/securimage.php';
         $securimage = new Securimage();
         if ($securimage->check($_REQUEST['captcha_code']) == false) {
-            setMessage('error','Der Sicherheitscode war nicht korrekt!');
+            setMessage('error','The security code was incorrect!');
         } else {
             if (is_array($_FILES['userfile'])) {
                 try {
                     Avatar::getAvatar($USER['user_id'])->createFromUpload('userfile');
-                    $msg =_("Die Bilddatei wurde erfolgreich hochgeladen. Eventuell sehen Sie das neue Bild erst, nachdem Sie diese Seite neu geladen haben (in den meisten Browsern F5 dr&uuml;cken). ");
+                    $msg =_("The image uploaded successfully.");
                 } catch (Exception $e) {
                     $msg = $e->getMessage().' ';
                 }
@@ -213,7 +220,7 @@ if ($USER) {
               ->save();
             if (trim($_REQUEST['passwort']) != '' && trim($_REQUEST['passwort2']) != '' && $_REQUEST['passwort'] == $_REQUEST['passwort2'])
                 $UM->setPassword($u->getUserId(),$_REQUEST['passwort']);
-            $msg .= "Die Einstellungen wurden &uuml;bernommen.";
+            $msg .= "The configuration was saved!";
             setMessage('info',$msg);
         }
         $dispatch = 'show_profile';
@@ -236,7 +243,7 @@ if ($USER) {
                   ->setFileId($file_id)
                   ->setTitleScreen($title_screen);
                 $s->save();
-                setMessage('info',"Die Datei wurde hochgeladen.");
+                setMessage('info',"The file uploaded successfully.");
             } else {
                 $f = new MFile();
                 $f->load($file_id);
@@ -244,15 +251,15 @@ if ($USER) {
                 unset($f);
                 @unlink($GLOBALS['DYNAMIC_CONTENT_URL'] . '/screenshots/foto_'.$file_id.'.jpg');
                         @unlink($GLOBALS['DYNAMIC_CONTENT_URL'] . '/screenshots/foto_thumb_'.$file_id.'.jpg');
-                setMessage('error',"Die Datei konnte nicht verarbeitet werden. ".$DBM->getErrorStr());
+                setMessage('error',"The file could not be handled.".$DBM->getErrorStr());
                 $DBM->setErrorStr();
             }
         } else if (is_array($_FILES['zipfile'])) {
             $plugin_id = Request::option('plugin_id');
             if ($DBM->add_new_zip($_FILES['zipfile']['tmp_name'], $_FILES['zipfile']['size'], $_FILES['zipfile']['name'], $plugin_id, $USER['user_id'])) {
-                setMessage('info',"Die Datei wurde hochgeladen und entpackt.");
+                setMessage('info',"The file uploaded and unzipped successfully.");
             } else {
-                setMessage('error',"Die Datei konnte nicht verarbeitet werden. ".$DBM->getErrorStr());
+                setMessage('error',"The file could not be handled.".$DBM->getErrorStr());
                 $DBM->setErrorStr();
             }
         }
@@ -267,9 +274,9 @@ if ($USER) {
         $p->load($s->getPluginId());
         if ($screenshot_id && $PERM->have_plugin_perm('author',$p->getPluginId())) {
             $s->remove();
-            setMessage('info',"Der Screenshot wurde gel&ouml;scht.");
+            setMessage('info',"The screenshot was deleted!");
         } else
-            setMessage('error',"Sie haben keine Berechtigung f&uuml;r dieses Plugin!");
+            setMessage('error',"You have no permission for this plugin!");
         $dispatch = 'show_edit_screenshots';
     }
     if ($dispatch == 'set_plugin_participant') {
@@ -296,9 +303,9 @@ if ($USER) {
         $p->load($r->getPluginId());
         if ($release_id && $PERM->have_plugin_perm('author',$p->getPluginId())) {
             $r->remove();
-            setMessage('info',"Das Release wurde gel&ouml;scht.");
+            setMessage('info',"The release was deleted!");
         } else
-            setMessage('error',"Sie haben keine Berechtigung f&uuml;r dieses Release!");
+            setMessage('error',"You have no permission for this release!");
         $dispatch = 'edit_plugin';
     }
     if ($dispatch == 'remove_plugin') {
@@ -308,9 +315,9 @@ if ($USER) {
             $p = new Plugin();
             $p->load($plugin_id);
             $p->remove();
-            setMessage('info',"Das Plugin wurde gel&ouml;scht.");
+            setMessage('info',"The plugin was deleted!");
         } else
-            setMessage('error',"Sie haben keine Berechtigung f&uuml;r dieses Plugin!");
+            setMessage('error',"You have no permission for this plugin!");
         unset($dispatch);
     }
     if ($dispatch == 'save_plugin') {
@@ -345,14 +352,14 @@ if ($USER) {
                 $p->setClassification($classification);
             }
             if ($plugin_id)
-                setMessage('info',"Das Plugin wurde gespeichert.");
+                setMessage('info',"The plugin was saved!");
             else {
                 $_REQUEST['plugin_id'] = $p->getPluginId();
-                setMessage('info',"Das Plugin wurde eingetragen.");
+                setMessage('info',"The plugin was inserted!");
             }
             $dispatch = 'edit_plugin';
         } else {
-            setMessage('error',"Sie haben keine Berechtigung f&uuml;r dieses Plugin!");
+            setMessage('error',"You have no permission for this plugin!");
             unset($dispatch);
         }
     }
@@ -414,11 +421,14 @@ if ($USER) {
               ->setStudipMinVersion(trim($manifest['studipMinVersion']))
               ->setStudipMaxVersion(trim($manifest['studipMaxVersion']))
               ->setOrigin(trim($manifest['origin']))
+              ->setServer($manifest['server'])
+              ->setType($manifest['type'])
               ->setUserId($USER['user_id'])
               ->setFileId($file_id)
               ->setDependencies($dependency_ids)
               ->setReleaseType(trim($_REQUEST['release_type']))
               ->save();
+             
             $r->setTags($_REQUEST['tags']);
         } else if ($release_id) {
             // Update
@@ -437,27 +447,30 @@ if ($USER) {
 
         } else {
             // Fehler
-            $err = "Fehler beim Hochladen des Releases! ".$err;
+            $err = "Error while uploading the releases! ".$err;
         }
         if ($err)
             setMessage('error',$err);
         else
-            setMessage('info',"Das Release wurde gespeichert.");
+            setMessage('info',"The release was saved!");
+
+      	LastPluginChange::save();
+      	
         $dispatch = 'edit_plugin';
     }
     if ($dispatch == 'edit_plugin') {
         $AUTH->checkPerm('author');
-        History::add(array('uri'=>'?dispatch=edit_plugin&plugin_id='.Request::option('plugin_id'),'txt'=>'Plugin bearbeiten'),2);
+        History::add(array('uri'=>'?dispatch=edit_plugin&plugin_id='.Request::option('plugin_id'),'txt'=>'Edit Plugins'),2);
         $GUI->showEditPlugin($_REQUEST['plugin_id']);
     }
     if ($dispatch == 'view_own_plugins') {
         $AUTH->checkPerm('author');
-        History::add(array('uri'=>'?dispatch=view_own_plugins','txt'=>'Meine Plugins'),0);
+        History::add(array('uri'=>'?dispatch=view_own_plugins','txt'=>'My Plugins'),0);
         $GUI->showOwnPlugins($USER['user_id']);
     }
     if ($dispatch == 'edit_release') {
         $AUTH->checkPerm('author');
-        History::add(array('uri'=>'?dispatch=edit_release&release_id='.Request::option('release_id').'&plugin_id='.Request::option('plugin_id'),'txt'=>'Release bearbeiten'),3);
+        History::add(array('uri'=>'?dispatch=edit_release&release_id='.Request::option('release_id').'&plugin_id='.Request::option('plugin_id'),'txt'=>'Edit Release'),3);
         $GUI->showEditRelease(Request::option('plugin_id'), Request::option('release_id'));
     }
     
@@ -470,13 +483,13 @@ if ($USER) {
                 $p = new Plugin();
                 $p->load($plugin_id);
                 $p->setUserId($user_id)->save();
-                setMessage('info',"Der Benutzer wurde zugewiesen.");
+                setMessage('info',"The user has been assigned.");
                 $GUI->showEditPlugin($plugin_id);
             }
         }
         if ($dispatch == 'edit_user') {
             if (Request::option('user_id')) {
-                History::add(array('uri'=>'?dispatch=edit_user&user_id='.Request::option('user_id'),'txt'=>'Benutzerverwaltung'),1);
+                History::add(array('uri'=>'?dispatch=edit_user&user_id='.Request::option('user_id'),'txt'=>'User Management'),1);
                 $GUI->showUserEditForm(Request::option('user_id'));
             }
         }
@@ -501,21 +514,21 @@ if ($USER) {
                 $UM->setPassword($u->getUserId(),trim($_REQUEST['passwort']));
                 $GLOBALS['MAIL']->generateResetPasswordMail($u,trim($_REQUEST['passwort']));
             }
-            setMessage('info',"Die Benutzerdaten wurden ver&auml;ndert / neu eingetragen!");
+            setMessage('info',"The user data has been changed!");
             $dispatch = 'user_management';
         }
         if ($dispatch == 'user_management') {
-            History::add(array('uri'=>'?dispatch=user_management','txt'=>'Benutzerverwaltung'),0);
+            History::add(array('uri'=>'?dispatch=user_management','txt'=>'User Management'),0);
             $GUI->showUserManagement();
         }
         if ($dispatch == 'do_clearing') {
             $plugin_id = Request::option('plugin_id');
             $p = new Plugin();
             $p->load($plugin_id);
-            $p->setApproved(1)
-              ->save();
+            $p->setApproved(1);
+            $p->save();
             $GLOBALS['MAIL']->generateAprovementMail($p);
-            setMessage('info',"Das Plugin wurde freigeschaltet und die Autorin / der Autor benachrichtigt.");
+            setMessage('info',"The plugin has been activated and will notify the author!");
             $dispatch = "clearing";
         }
         if ($dispatch == 'do_suspend') {
@@ -525,7 +538,7 @@ if ($USER) {
             $p->setApproved(0)
               ->save();
             $GLOBALS['MAIL']->generateSuspendMail($p);
-            setMessage('info',"Das Plugin wurde gesperrt und die Autorin / der Autor benachrichtigt.");
+            setMessage('info',"The plugin has been deactivated and will notify the author!");
             $dispatch = "clearing";
         }
         if ($dispatch == "clearing") {
@@ -537,7 +550,7 @@ if ($USER) {
             $p = new Plugin();
                         $p->load($plugin_id);
             $p->setRezension($_REQUEST['rezension_txt']);
-            setMessage('info',"Die Rezension wurde gespeichert.");
+            setMessage('info',"The review has been saved!");
             $dispatch = 'edit_rezension';
         }
         if ($dispatch == 'edit_rezension') {
@@ -551,7 +564,7 @@ if ($USER) {
             $c->load($key);
             $c->setContentTxt($content_txt)
               ->save();
-            setMessage('info',"Inhalt gespeichtert.");
+            setMessage('info',"The content has been saved!");
             $dispatch = 'edit_content';
         }
         if ($dispatch == 'edit_content') {
@@ -563,7 +576,7 @@ if ($USER) {
         include_once 'lib/captcha/securimage.php';
         $securimage = new Securimage();
         if ($securimage->check($_REQUEST['captcha_code']) == false && !$GLOBALS['AUTH']->getAuthenticatedUser()) {
-            setMessage('error','Der Sicherheitscode war nicht korrekt!');
+            setMessage('error','The security code was incorrect!');
             $plugin_id = Request::option('plugin_id');
             $p = new Plugin();
             $p->load($plugin_id);
@@ -576,7 +589,7 @@ if ($USER) {
             $question_type = trim($_REQUEST['question_type']);
             if ($plugin_id && $email && $question) {
                 $GLOBALS['MAIL']->generateQuestionMail($plugin_id, $question, $question_type, $users_name, $email);
-                setMessage('info',"Die Anfage wurde versendet.");
+                setMessage('info',"The request was send!");
                 unset($dispatch);
             }
         }
@@ -595,7 +608,7 @@ if ($dispatch == 'extended_search') {
     $fulltext = Request::option('fulltext');
     $category_id = Request::option('category_id');
     $language = Request::option('language');
-    History::add(array('uri'=>'?dispatch=extended_search&search_txt='.urlencode($search_txt).'&fulltext='.urlencode($fulltext).'&category_id='.$category_id.'&language='.$language,'txt'=>'Erweiterte Suche'),0);
+    History::add(array('uri'=>'?dispatch=extended_search&search_txt='.urlencode($search_txt).'&fulltext='.urlencode($fulltext).'&category_id='.$category_id.'&language='.$language,'txt'=>'Extendet Search'),0);
     $GUI->showExtendedSearchResults(array('search_txt'=>$search_txt, 'fulltext'=>$fulltext, 'category_id'=>$category_id, 'language'=>$language));
 }
 if ($dispatch == 'show_profile') {
@@ -608,13 +621,13 @@ if ($dispatch == 'show_profile') {
 }
 if ($dispatch == 'tagsearch') {
     $tag = Request::quoted('tag');
-    History::add(array('uri'=>'?dispatch=tagsearch&tag='.urlencode(stripslashes($tag)),'txt'=>'Tag-Suche ('.htmlReady(stripslashes($tag)).')'),0);
+    History::add(array('uri'=>'?dispatch=tagsearch&tag='.urlencode(stripslashes($tag)),'txt'=>'Tag-Search ('.htmlReady(stripslashes($tag)).')'),0);
     $GUI->showTagSearch($tag);
 }
 if ($dispatch == 'search') {
     $txt = trim($_REQUEST['search_txt']);
     $category_id = Request::option('category_id');
-    History::add(array('uri'=>'?dispatch=search&search_txt='.urlencode($txt).'&category_id='.$category_id,'txt'=>'Suche'),0);
+    History::add(array('uri'=>'?dispatch=search&search_txt='.urlencode($txt).'&category_id='.$category_id,'txt'=>'Search'),0);
     if ($category_id == 'all') $category_id = FALSE;
     $GUI->showSearchResults($txt,$category_id);
 }
@@ -624,20 +637,20 @@ if ($dispatch == "hitlist") {
         $liste = "";
         switch ($hitlist) {
             case 'recommended':
-                $liste = "Empfohlene Plugins";
+                $liste = "Recommended Plugins";
                 break;
             case 'latest': 
-                $liste = "Neueste Releases";
+                $liste = "Latest Releases";
                 break;
             case 'most_downloaded':
-                $liste = "Am h&auml;ufigsten heruntergeladen";
+                $liste = "Top Downloads";
                 break;
             case 'most_rated':
-                $liste = "Am meisten bewertet";
+                $liste = "Most Voted";
                 break;
             default: ;
         }
-        History::add(array('uri'=>'?dispatch=hitlist&part='.urlencode($hitlist),'txt'=>'Hitliste ('.$liste.')'),0);
+        History::add(array('uri'=>'?dispatch=hitlist&part='.urlencode($hitlist),'txt'=>'Hit List ('.$liste.')'),0);
         $GUI->showHitlist($hitlist);
     } else 
         unset($dispatch);
@@ -666,7 +679,7 @@ if ($dispatch == 'show_plugin_details') {
     $GUI->showPluginDetails($pid);
 }
 
-if (in_array($dispatch, array('welcome','marktplatz','links','team','impressum','datenschutz','nutzungsbedingungen','faq','tutorials','devfaq'))) {
+if (in_array($dispatch, array('welcome','marketplace','links','team','impressum','datenschutz','nutzungsbedingungen','faq','tutorials','faq'))) {
     History::clear();
     $GUI->showIndex($GUI->getContent($dispatch));
 }
@@ -701,3 +714,4 @@ if (!$dispatch) {
 
 include_once 'templates/footer.php';
 
+?>

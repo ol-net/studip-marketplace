@@ -4,7 +4,7 @@ body, input, textarea, td, th, blockquote, p, form, ul {
     color: #000000;
 }
 a {
-	color:#184273;
+	color:#861B1D;
 	text-decoration:none;
 }
 img {
@@ -95,9 +95,19 @@ tr.cycle_even:hover {
     background-color: #B7C2E2;
 }
 
+/*
 .topic {
-	/*background-color:#2d4583;*/
-	background-color:#4564b1;
+	background-color:#861B1D;
+	color:white;
+	padding:3px;
+	font-size:12px;
+	font-weight:bold;
+	margin-bottom:5px;
+}
+*/
+
+.header-topic {
+	background-color:#861B1D;
 	color:white;
 	padding:3px;
 	font-size:12px;
@@ -341,7 +351,7 @@ tr.cycle_even:hover {
 }
 
 
-.history_container {
+.history_container a{
 	padding-left:2px;
 	padding-top:5px;
 	padding-bottom:5px;
@@ -349,6 +359,7 @@ tr.cycle_even:hover {
 	font-family:Verdana,fantasy;
 	font-weight:normal;
 	background-color:#f1f1f1;
+	color:#861B1D;
 }
 
 .comment_item {
@@ -413,6 +424,7 @@ tr.cycle_even:hover {
     padding: 1em;
     border: 1px solid #D0D0D0;
     overflow: hidden;
+	color:#861B1D;
 }
 
 .click_me p {

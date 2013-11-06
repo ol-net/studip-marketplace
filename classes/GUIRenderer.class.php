@@ -179,7 +179,7 @@ class GUIRenderer {
 		$plugins = $GLOBALS['DBM']->getPluginsByUserId($user_id);
 		$plugins_rendered = $this->renderPluginItems($plugins);
 		$template = $GLOBALS['FACTORY']->open('search_plugins');
-		$template->set_attribute('title', count($plugins)." Plugin".(count($plugins) == 1 ? '' : 's')." gefunden.");
+		$template->set_attribute('title', count($plugins)." Plugin".(count($plugins) == 1 ? '' : 's')." found.");
 		$template->set_attribute('plugin_list', $plugins_rendered);
 		$template->set_attribute('count_plugins', count($plugins));
 	
@@ -190,7 +190,7 @@ class GUIRenderer {
 		$plugins = $GLOBALS['DBM']->getPluginsByExtendedSearch($search_items);
 		$plugins_rendered = $this->renderPluginItems($plugins);
 		$template = $GLOBALS['FACTORY']->open('search_plugins');
-		$template->set_attribute('title', count($plugins)." Plugin".(count($plugins) == 1 ? '' : 's')." gefunden.");
+		$template->set_attribute('title', count($plugins)." Plugin".(count($plugins) == 1 ? '' : 's')." found.");
 		$template->set_attribute('plugin_list', $plugins_rendered);
 		$template->set_attribute('count_plugins', count($plugins));
 	
@@ -202,7 +202,7 @@ class GUIRenderer {
 		$plugins = $GLOBALS['DBM']->getPluginsByTxt($txt, $catagory_id);
 		$plugins_rendered = $this->renderPluginItems($plugins);
 		$template = $GLOBALS['FACTORY']->open('search_plugins');
-		$template->set_attribute('title', count($plugins)." Plugin".(count($plugins) == 1 ? '' : 's')." gefunden.");
+		$template->set_attribute('title', count($plugins)." Plugin".(count($plugins) == 1 ? '' : 's')." found.");
 		$template->set_attribute('plugin_list', $plugins_rendered);
 		$template->set_attribute('count_plugins', count($plugins));
 	
@@ -213,7 +213,7 @@ class GUIRenderer {
 		$plugins = $GLOBALS['DBM']->getPluginsByHitlist($hitlist);
 		$plugins_rendered = $this->renderPluginItems($plugins);
 		$template = $GLOBALS['FACTORY']->open('search_plugins');
-		$template->set_attribute('title', count($plugins)." Plugin".(count($plugins) == 1 ? '' : 's')." gefunden.");
+		$template->set_attribute('title', count($plugins)." Plugin".(count($plugins) == 1 ? '' : 's')." found.");
 		$template->set_attribute('plugin_list', $plugins_rendered);
 		$template->set_attribute('count_plugins', count($plugins));
 	
@@ -224,7 +224,7 @@ class GUIRenderer {
 		$plugins = $GLOBALS['DBM']->getPluginsByTagName($tag);
 		$plugins_rendered = $this->renderPluginItems($plugins);
 		$template = $GLOBALS['FACTORY']->open('search_plugins');
-		$template->set_attribute('title', count($plugins)." Plugin".(count($plugins) == 1 ? '' : 's')." gefunden.");
+		$template->set_attribute('title', count($plugins)." Plugin".(count($plugins) == 1 ? '' : 's')." found.");
 		$template->set_attribute('plugin_list', $plugins_rendered);
 		$template->set_attribute('count_plugins', count($plugins));
 	
@@ -299,7 +299,7 @@ class GUIRenderer {
 		$plugins = $GLOBALS['DBM']->getPluginsByCategory($category_id);
 		$plugins_rendered = $this->renderPluginItems($plugins);
 		$template = $GLOBALS['FACTORY']->open('search_plugins');
-		$template->set_attribute('title', count($plugins)." Plugin".(count($plugins) == 1 ? '' : 's')." gefunden.");
+		$template->set_attribute('title', count($plugins)." Plugin".(count($plugins) == 1 ? '' : 's')." found.");
 		$template->set_attribute('plugin_list', $plugins_rendered);
 		$template->set_attribute('count_plugins', count($plugins));
 	

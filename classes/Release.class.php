@@ -35,6 +35,8 @@ class Release {
     private $dependencies = array();
     private $downloads = 0;
     private $chdate = 0;
+    private $type = "";
+    private $server = "";
 
     public function __construct() {
 
@@ -50,6 +52,14 @@ class Release {
 
     public function getVersion() {
         return $this->version;
+    }
+    
+    public function getType() {
+    	return $this->type;
+    }
+    
+    public function getServer() {
+    	return $this->server;
     }
 
     public function getStudipMinVersion() {
@@ -74,6 +84,10 @@ class Release {
 
     public function getChdate() {
         return $this->chdate;
+    }
+    
+    public function getMkdate() {
+        return $this->mkdate;
     }
 
     public function getAuthor() {
@@ -110,6 +124,16 @@ class Release {
     public function setReleaseId($s) {
         $this->release_id = $s;
         return $this;
+    }
+    
+    public function setServer($s) {
+    	$this->server = $s;
+    	return $this;
+    }
+    
+    public function setType($s) {
+    	$this->type = $s;
+    	return $this;
     }
 
     public function setVersion($s) {
@@ -157,17 +181,17 @@ class Release {
         if (!$this->release_id) {
             $this->release_id = md5(uniqid(time().$this->plugin_id.$this->user_id));
             $this->mkdate = time();
-            $stmt = $db->prepare("INSERT INTO releases (release_id, plugin_id, version, studip_min_version, studip_max_version, mkdate, user_id, file_id, release_type, origin) VALUES (?,?,?,?,?,?,?,?,?,?)");
-            $stmt->execute(array($this->release_id,$this->plugin_id,$this->version,$this->studip_min_version,$this->studip_max_version,$this->mkdate,$this->user_id,$this->file_id,$this->release_type,$this->origin));
+            $stmt = $db->prepare("INSERT INTO releases (release_id, plugin_id, version, studip_min_version, studip_max_version, mkdate, user_id, file_id, release_type, origin, server, type) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+            $stmt->execute(array($this->release_id,$this->plugin_id,$this->version,$this->studip_min_version,$this->studip_max_version,$this->mkdate,$this->user_id,$this->file_id,$this->release_type,$this->origin,$this->server,$this->type));
         } else {
-            $stmt = $db->prepare("UPDATE releases SET version=?, studip_min_version=?, studip_max_version=?, file_id=?, release_type=?, origin=?, chdate=UNIX_TIMESTAMP() WHERE release_id=?");
-            $stmt->execute(array($this->version,$this->version,$this->studip_max_version,$this->file_id,$this->release_type,$this->origin,$this->release_id));
+            $stmt = $db->prepare("UPDATE releases SET version=?, studip_min_version=?, studip_max_version=?, file_id=?, release_type=?, origin=?, server=?, type=?, mkdate=UNIX_TIMESTAMP() WHERE release_id=?");
+            $stmt->execute(array($this->version,$this->version,$this->studip_max_version,$this->file_id,$this->release_type,$this->origin,$this->release_id,$this->server,$this->type));
         }
         $db->query(sprintf("DELETE FROM dependencies WHERE release_id='%s'",$this->release_id));
                 foreach ($this->dependencies as $d) {
                         $db->query(sprintf("INSERT INTO dependencies (dependent_id, release_id) VALUES ('%s','%s')",$d, $this->release_id));
                 }
-        }
+    }
 
     public function getReleaseFromFileId($fid) {
         $r = DBManager::get()->query(sprintf("SELECT release_id FROM releases WHERE file_id='%s'",$fid))->fetch(PDO::FETCH_NUM);
@@ -190,6 +214,8 @@ class Release {
             $this->downloads = $r[0]['downloads'];
             $this->release_type = $r[0]['release_type'];
             $this->origin = $r[0]['origin'];
+            $this->server = $r[0]['server'];
+            $this->type = $r[0]['type'];
             $rr = $db->query(sprintf("SELECT dependent_id FROM dependencies WHERE release_id='%s'",$this->release_id))->fetchAll();
                         foreach ($rr as $d)
                                 array_push($this->dependencies, $d['dependent_id']);

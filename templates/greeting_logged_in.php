@@ -2,41 +2,41 @@
 <? if ($GLOBALS['PERM']->have_perm('admin')) : ?>
   <a class="click_me" href="#" onClick="location.href='?dispatch=user_management';">
     <div>
-      <span class="click_head"> Benutzerverwaltung </span>
-      <p>Bearbeiten von Nutzerdetails und Neueintragen von Personen.</p>
+      <span class="click_head"> User Management </span>
+      <p>Editing user details and add new users.</p>
     </div>
   </a>
   <a class="click_me" href="#" onClick="location.href='?dispatch=clearing';">
     <div>
-      <span class="click_head"> Plugins freischalten </span>
-      <p>Neu eingetragene Plugins f&uuml;r die &Ouml;ffentlichkeit freischalten.</p>
+      <span class="click_head"> Activate Plugins </span>
+      <p>Activate new plugins for the public.</p>
     </div>
   </a>
 <? endif ?>
 <? if ($GLOBALS['PERM']->have_perm('author') && !$GLOBALS['PERM']->have_perm('admin')) : ?>
   <a class="click_me" href="#" onClick="location.href='?dispatch=assi';">
     <div>
-      <span class="click_head"> Plugin eintragen </span>
-      <p>Tragen Sie hier ein neues Plugin ein. Anschlie&szlig;end wird es von einem Administrator gepr&uuml;ft und freigegeben.</p>
+      <span class="click_head"> Add Plugins </span>
+      <p>Enter a new plugin. It will be checked then and approved by an administrator.</p>
     </div>
   </a>
   <a class="click_me" href="#" onClick="location.href='?dispatch=view_own_plugins';">
     <div>
-      <span class="click_head"> Meine Plugins </span>
-      <p>Hier erhalten Sie eine &Uuml;bersicht &uuml;ber die von Ihnen eingetragenen Plugins.</p>
+      <span class="click_head"> My Plugins </span>
+      <p>Here you will get an overview of the plugins you entered.</p>
     </div>
   </a>
 <? endif ?>
   <a class="click_me" href="#" onClick="location.href='?dispatch=show_profile';">
     <div>
-      <span class="click_head"> Mein Profil </span>
-      <p>Bearbeiten Sie hier Ihre pers&ouml;nlichen Nutzerdaten innerhalb des Plugin-Marktplatzes.</p>
+      <span class="click_head"> My Profil </span>
+      <p>Here you can edit your personal user data.</p>
     </div>
   </a>
   <a class="click_me" href="#" onClick="location.href='?dispatch=faq';">
     <div>
       <span class="click_head"> FAQ </span>
-      <p>Haben Sie Fragen zum Umgang mit dem Plugin-Marktplatz oder allgemein zu Plugins? Hier finden Sie sicherlich eine Antwort.</p>
+      <p>If you have questions about the use of the plugin market generally or to plugins? Here you will surely find an answer.</p>
     </div>
   </a>
 </div>

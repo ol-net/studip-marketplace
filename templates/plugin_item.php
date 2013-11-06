@@ -11,13 +11,13 @@
         }); 
 </script>
 <? else :?>
-        <IMG SRC="<?=$image_uri?>/unknown-plugin.png" ALT="Kein Titel-Screenshot angegeben" TITLE="Kein Titel-Screenshot angegeben">
+        <IMG SRC="<?=$image_uri?>/unknown-plugin.png" ALT="No title specified" TITLE="No title specified">
 <? endif ?>
       </TD>
       <TD STYLE="width:600px; vertical-align:top;">
-        <DIV STYLE="float:left; font-weight:bold; font-size:16px;"><A HREF="?dispatch=show_plugin_details&plugin_id=<?=$p->getPluginId()?>"><?=htmlReady($p->getName())?></A> <IMG SRC="images/languages/lang_<?=$p->getLanguage()?>.gif"></DIV>
+        <DIV STYLE="float:left; font-weight:bold; font-size:16px;"><A HREF="?dispatch=show_plugin_details&plugin_id=<?=$p->getPluginId()?>"><?=htmlReady($p->getName())?></A> <!-- <IMG SRC="images/languages/lang_<?=$p->getLanguage()?>.gif"> --></DIV>
 <? if (!$p->getApproved()) : ?>
-        <DIV STYLE="float:right;"><IMG SRC="images/icons/delete.png" ALT="Plugin noch nicht freigegeben" TITLE="Plugin noch nicht freigegeben"></DIV>
+        <DIV STYLE="float:right;"><IMG SRC="images/icons/delete.png" ALT="Plugin not released" TITLE="Plugin not released"></DIV>
 <? /* else : ?>
 <? if ($p->getClassification() == 'firstclass') : ?>
         <DIV STYLE="float:right;"><IMG SRC="images/icons/award_star_gold_1.png" ALT="Premium Gold Plugin" TITLE="Premium Gold Plugin"></DIV>
@@ -54,10 +54,10 @@
         <HR>
 <? if ($p->getChdate()) : ?>
         <DIV STYLE="float:left; margin-right:15px; font-size:10px; color:gray;">
-          Aktualisiert am <?=date('d.m.Y',$p->getChdate())?>
+          Update on <?=date('d.m.Y',$p->getChdate())?>
         </DIV>
 <? endif ?>
-        <DIV STYLE="float:right;"><A HREF="?dispatch=show_plugin_details&plugin_id=<?=$p->getPluginId()?>">mehr...</A></DIV>
+        <DIV STYLE="float:right;"><A HREF="?dispatch=show_plugin_details&plugin_id=<?=$p->getPluginId()?>">more...</A></DIV>
         <DIV STYLE="clear:both;"></DIV>
         <!-- HR -->
         <!-- DIV STYLE="float:left; margin-right:15px;">
@@ -66,7 +66,7 @@
           <SPAN ID="ratinghint" STYLE="font-size:12px; font-weight:bold; color:green; height:15px;">&nbsp;</SPAN>
         </DIV -->
 <? if ($GLOBALS['PERM']->have_plugin_perm('author',$p->getPluginId())) : ?>
-        <DIV STYLE="float:right;"><A HREF="?dispatch=edit_plugin&plugin_id=<?=$p->getPluginId()?>"><?=makeButton('bearbeiten','img')?></A></DIV>
+        <DIV STYLE="float:right;"><A HREF="?dispatch=edit_plugin&plugin_id=<?=$p->getPluginId()?>"><?=makeButton('edit','img')?></A></DIV>
 <? endif ?>
       </TD>
     </TR>

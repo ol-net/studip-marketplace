@@ -1,7 +1,7 @@
 <script type="text/javascript">
 var checkInput = function() {
         if ($('pluginname').value == '' || $('pluginclassname').value == '' || $('pluginauthor').value == '') {
-                alert('Bitte füllen Sie alle Pflichtfelder aus!');
+                alert('Please fill in all required fields!');
                 return false;
         } else {
                 return true;;

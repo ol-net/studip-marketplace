@@ -8,7 +8,7 @@ var saveComment = function (rid, cobj) {
             if (t.responseText != 'OK') {
                 alert(t.responseText);
             } else {
-                alert('Der Kommentar wurde gespeichert.');
+                alert('Comment saved!');
                 $(cobj).value = '';
             }
             getCommentsContent(rid);
@@ -48,18 +48,20 @@ var removeCommentsItem = function (item, rid) {
     <div id="header">
         <!-- Logo Starts -->
         <div id="logo">
-            <h1><a href="?"><span>Stud.IP Plugin-Marktplatz</span></a></h1>
+            <h1><a href="?"><span>Matterhorn Marketplace</span></a></h1>
         </div>
         <!-- Logo Ends -->
-        <div id="claim">Der Marktplatz. Plugins und Informationen.</div>
+        <!--<div id="claim">Der Marktplatz. Plugins und Informationen.</div>-->
         <div id="sitemap_search">
             <p>
 <? if ($user = $GLOBALS['AUTH']->getAuthenticatedUser()) : ?>
-                <SPAN STYLE="color:white; font-size:14px; font-weight:bold;">Angemeldet als: <?=UserManagement::getUsernameByUserId($user['user_id'])?></SPAN><SPAN STYLE="color:white; font-size:14px;">&nbsp;|&nbsp;</SPAN><A HREF="?dispatch=logout" STYLE="color:white; font-size:14px;">Logout</A> |
+                <SPAN STYLE="color:white; font-size:14px; font-weight:bold;">Registered: <?=UserManagement::getUsernameByUserId($user['user_id'])?></SPAN><SPAN STYLE="color:white; font-size:14px;">&nbsp;|&nbsp;</SPAN><A HREF="?dispatch=logout" STYLE="color:white; font-size:14px;">Logout</A> <SPAN STYLE="color:white; font-size:14px;">&nbsp;|&nbsp;</SPAN>
 <? endif ?>
-                <A HREF="?dispatch=impressum" STYLE="color:white; font-size:14px;">Impressum</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=impressum\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"bearbeiten\" TITLE=\"bearbeiten\"></A>" : '')?> |
+                <A HREF="?dispatch=impressum" STYLE="color:white; font-size:14px;">Impressum</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=impressum\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"edit\" TITLE=\"edit\"></A>" : '')?> 
+                <!--|
                 <A HREF="?dispatch=datenschutz" STYLE="color:white; font-size:14px;">Datenschutz</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=datenschutz\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"bearbeiten\" TITLE=\"bearbeiten\"></A>" : '')?> |
                 <A HREF="?dispatch=nutzungsbedingungen" STYLE="color:white; font-size:14px;">Nutzungsbedingungen</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=nutzungsbedingungen\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"bearbeiten\" TITLE=\"bearbeiten\"></A>" : '')?>
+           		-->
             </p>
         </div>
     </div>
@@ -78,7 +80,6 @@ var removeCommentsItem = function (item, rid) {
                     <div class="mblock1">
                         <div class="mblock1-bottom">
                             <div class="mblock1-headline">
-                                <!-- h1>Stud.IP Plugin-Marktplatz</h1 -->
                             </div>
                             <!--PageText Start-->
 <!--table border=1 cellpadding=0 cellspacing=1 width="100%" style="margin:-1px -1px; -1px -1px">
@@ -133,14 +134,14 @@ var removeCommentsItem = function (item, rid) {
             <div class="sblock1-wrap end">
                 <div class="sblock1">
                     <div class="sblock1-bottom">
-                        <h4>Der Marktplatz</h4>
+                        <h4>Marketplace</h4>
                             <ul class="level1">
-                                <li><A HREF="?dispatch=welcome">Willkommen</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=welcome\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"bearbeiten\" TITLE=\"bearbeiten\"></A>" : '')?></li>
-                                <li><A HREF="?dispatch=marktplatz">&Uuml;ber den Marktplatz</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=marktplatz\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"bearbeiten\" TITLE=\"bearbeiten\"></A>" : '')?></li>
-                                <li><A HREF="?dispatch=faq">FAQ</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=faq\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"bearbeiten\" TITLE=\"bearbeiten\"></A>" : '')?></li>
-                                <li><A HREF="http://www.studip.de" TARGET="studip">Stud.IP-Portal</A></li>
-                                <li><A HREF="?dispatch=links">Weiterf&uuml;hrende Links</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=links\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"bearbeiten\" TITLE=\"bearbeiten\"></A>" : '')?></li>
+                                <li><A HREF="?dispatch=welcome">Welcome</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=welcome\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"edit\" TITLE=\"edit\"></A>" : '')?></li>
+                                <li><A HREF="?dispatch=marketplace">About the Marketplace</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=marketplace\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"edit\" TITLE=\"edit\"></A>" : '')?></li>
+                                <!--<li><A HREF="?dispatch=faq">FAQ</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=faq\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"bearbeiten\" TITLE=\"bearbeiten\"></A>" : '')?></li> -->
+                               <!-- <li><A HREF="?dispatch=links">Weiterf&uuml;hrende Links</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=links\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"bearbeiten\" TITLE=\"bearbeiten\"></A>" : '')?></li>
                                 <li><A HREF="?dispatch=team">Das Team</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=team\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"bearbeiten\" TITLE=\"bearbeiten\"></A>" : '')?></li>
+                            	-->
                             </ul>
                     </div>
                 </div>
@@ -152,7 +153,7 @@ var removeCommentsItem = function (item, rid) {
             <div class="sblock1-wrap end">
                 <div class="sblock1">
                     <div class="sblock1-bottom">
-                        <h4>Kategorien</h4>
+                        <h4>Category</h4>
                             <ul class="level1">
 <? foreach ($GLOBALS['DBM']->getCategories() as $c) : ?>
                                 <li><A HREF="?dispatch=show_category&category_id=<?=$c['category_id']?>"><?=$c['name']?> <SPAN STYLE="font-size:11px;">(<?=$c['count_cat']?>)</SPAN></A></li>
@@ -168,9 +169,9 @@ var removeCommentsItem = function (item, rid) {
             <div class="sblock1-wrap end">
                 <div class="sblock1">
                     <div class="sblock1-bottom">
-                        <h4>Hitlisten</h4>
+                        <h4>Favourites</h4>
                             <ul class="level1">
-<? foreach (array(array('title'=>'Neueste Releases','uri'=>'?dispatch=hitlist&part=latest'),array('title'=>'Meiste Downloads','uri'=>'?dispatch=hitlist&part=most_downloaded')/*,array('title'=>'Am meisten bewertet','uri'=>'?dispatch=hitlist&part=most_rated')*/) as $d) : ?>
+<? foreach (array(array('title'=>'New Releases','uri'=>'?dispatch=hitlist&part=latest'),array('title'=>'Most Downloads','uri'=>'?dispatch=hitlist&part=most_downloaded')/*,array('title'=>'Am meisten bewertet','uri'=>'?dispatch=hitlist&part=most_rated')*/) as $d) : ?>
                                 <li><A HREF="<?=$d['uri']?>"><?=$d['title']?></A></li>
 <? endforeach ?>
                             </ul>
@@ -181,41 +182,18 @@ var removeCommentsItem = function (item, rid) {
 
             <hr class="hidden" />
 
-<? if ($user = $GLOBALS['AUTH']->getAuthenticatedUser()) : ?>
             <!-- Block Starts -->
             <div class="sblock1-wrap end">
                 <div class="sblock1">
                     <div class="sblock1-bottom">
-                        <h4>Mein Marktplatz</h4>
-                        <ul class="level1">
-                            <li><A HREF="?dispatch=show_profile">Mein Profil</A></li>
-<? if ($GLOBALS['PERM']->have_perm('author')) : ?>
-                            <li><A HREF="?dispatch=assi">Plugin eintragen</A></li>
-                            <li><A HREF="?dispatch=view_own_plugins">Meine Plugins</A></li>
-<? endif ?>
-<? if ($GLOBALS['PERM']->have_perm('admin')) : ?>
-                            <li><A HREF="?dispatch=user_management">Benutzerverwaltung</A></li>
-                            <li><A HREF="?dispatch=clearing">Plugins freischalten (<?=count($GLOBALS['DBM']->getUnclearPlugins())?>)</A></li>
-<? endif ?>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- Block Ends -->
-            <hr class="hidden" />
-<? endif ?>
-
-
-            <!-- Block Starts -->
-            <div class="sblock1-wrap end">
-                <div class="sblock1">
-                    <div class="sblock1-bottom">
-                        <h4>F&uuml;r Entwickler</h4>
+                        <h4>Developer Guide</h4>
                         <ul class="level1">
                             <!-- li><A HREF="?dispatch=show_plugin_generator">Plugin-Generator</A></li -->
-                            <li><A HREF="http://docs.studip.de/develop/Entwickler/PluginSchnittstelle" TARGET="_blank">Plugin-Schnittstelle</A></li>
-                            <li><A HREF="http://docs.studip.de/develop/Entwickler/PluginTutorial" TARGET="_blank">Tutorials</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=tutorials\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"bearbeiten\" TITLE=\"bearbeiten\"></A>" : '')?></li>
-                            <li><A HREF="?dispatch=devfaq">Entwicklungs-FAQ</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=devfaq\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"bearbeiten\" TITLE=\"bearbeiten\"></A>" : '')?></li>
+                            <li><A HREF="?dispatch=faq">Plugin-Interface</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=faq\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"edit\" TITLE=\"edit\"></A>" : '')?></li>
+                            <li><A HREF="https://opencast.jira.com/wiki/display/MH/Matterhorn+Development+Wiki" TARGET="_blank">Developer-FAQ</A></li>
+                            <!--<li><A HREF="https://opencast.jira.com/wiki/display/MH/Matterhorn+Development+Wiki" TARGET="_blank">Tutorials</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=tutorials\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"edit\" TITLE=\"edit\"></A>" : '')?></li>-->
+                            <li><A HREF="http://opencast.org" TARGET="opencast">Opencast</A></li>
+                            <li><A HREF="http://opencast.org/matterhorn" TARGET="matterhorn">Matterhorn</A></li>
                         </ul>
                     </div>
                 </div>
@@ -235,10 +213,10 @@ var removeCommentsItem = function (item, rid) {
             <div class="rblock1-wrap end">
                 <div class="rblock1">
                     <div class="rblock1-bottom">
-                        <h4>Anmeldung</h4>
+                        <h4>Authorization</h4>
                         <ul class="level1">
                             <li><A HREF="?dispatch=login">Login</a></li>
-                            <li><A HREF="?dispatch=register">Registrierung</a></li>
+                            <li><A HREF="?dispatch=register">Registration</a></li>
                         </ul>
                     </div>
                 </div>
@@ -248,16 +226,41 @@ var removeCommentsItem = function (item, rid) {
             <hr class="hidden" />
 <? endif ?>
 
+
+<? if ($user = $GLOBALS['AUTH']->getAuthenticatedUser()) : ?>
             <!-- Block Starts -->
             <div class="rblock1-wrap end">
                 <div class="rblock1">
                     <div class="rblock1-bottom">
-                        <h4>Suche</h4>
-                        <label for="search_txt" style="font-weight:bold;">Suche:</label>
+                        <h4>My Marketplace</h4>
+                        <ul class="level1">
+                            <li><A HREF="?">Profil</A></li>
+<? if ($GLOBALS['PERM']->have_perm('author')) : ?>
+                            <li><A HREF="?dispatch=assi">Add Plugin</A></li>
+                            <li><A HREF="?dispatch=view_own_plugins">My Plugins</A></li>
+<? endif ?>
+<? if ($GLOBALS['PERM']->have_perm('admin')) : ?>
+                            <li><A HREF="?dispatch=user_management">User Management</A></li>
+                            <li><A HREF="?dispatch=clearing">Activate Plugins (<?=count($GLOBALS['DBM']->getUnclearPlugins())?>)</A></li>
+<? endif ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Block Ends -->
+            <hr class="hidden" />
+<? endif ?>
+
+            <!-- Block Starts -->
+            <div class="rblock1-wrap end">
+                <div class="rblock1">
+                    <div class="rblock1-bottom">
+                        <h4>Search</h4>
+                        <label for="search_txt" style="font-weight:bold;">Search:</label>
                         <INPUT TYPE="text" MAXLENGTH="255" class="jq_watermark" placeholder="Suchwort" NAME="search_txt" ID="search_txt" STYLE="font-size:14px; width:150px; margin-top:3px;"><br>
-                        <label for="category_id" style="font-weight:bold;">in der Kategorie:</label>
+                        <label for="category_id" style="font-weight:bold;">in Category:</label>
                         <SELECT SIZE="1" NAME="category_id" ID="category_id" STYLE="width:150px;">
-                            <OPTION VALUE="all">Alle Kategorien</OPTION>
+                            <OPTION VALUE="all">All Categories</OPTION>
 <? foreach ($GLOBALS['DBM']->getCategories() as $c) : ?>
                             <OPTION VALUE="<?=$c['category_id']?>"><?=$c['name']?></OPTION>
 <? endforeach ?>
@@ -270,7 +273,7 @@ $j('#search_txt').keypress(function(event) {
     }
 });
 </script>
-                        <br><A HREF="?dispatch=show_extended_search" ALT="Erweiterte Suche" TITLE="Erweiterte Suche">Erweiterte Suche</A>
+                 <!--       <br><A HREF="?dispatch=show_extended_search" ALT="extended search" TITLE="Extended Search">Extended Search</A> -->
                     </div>
                 </div>
             </div>
@@ -278,7 +281,7 @@ $j('#search_txt').keypress(function(event) {
 
             <hr class="hidden" />
 
-            <!-- Block Starts -->
+            <!-- Block Starts -
             <div class="rblock1-wrap end">
                 <div class="rblock1">
                     <div class="rblock1-bottom">
@@ -287,11 +290,11 @@ $j('#search_txt').keypress(function(event) {
                     </div>
                 </div>
             </div>
-            <!-- Block Ends -->
+             Block Ends -->
 
             <hr class="hidden" />
 
-            <!-- Block Starts -->
+            <!-- Block Starts 
             <div class="sblock1-wrap end">
                 <div class="sblock2">
                     <div class="sblock2-bottom">
@@ -301,7 +304,7 @@ $j('#search_txt').keypress(function(event) {
                     </div>
                 </div>
             </div>
-            <!-- Block Ends -->
+             Block Ends -->
 
             <hr class="hidden" />
 

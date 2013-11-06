@@ -22,7 +22,7 @@
         <DIV STYLE="padding-top:15px;"><?=htmlReady(mila($p->getShortDescription(),170))?><BR>
 <? if ($p->getChdate()) : ?>
         <DIV STYLE="float:left; margin-right:15px; font-size:10px; color:gray;">
-          Aktualisiert am <?=date('d.m.Y',$p->getChdate())?>
+          Update on <?=date('d.m.Y',$p->getChdate())?>
         </DIV>
 <? endif ?>
       </TD>

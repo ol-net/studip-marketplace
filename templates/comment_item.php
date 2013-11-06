@@ -4,7 +4,7 @@
     <TD STYLE="font-size:11px; font-weight:bold;">
       <?=date('d.m.Y H:i',$c->getMkdate())?> <A HREF="?dispatch=show_profile&username=<?=$GLOBALS['UM']->getUsernameByUserId($c->getUserId())?>"><?=htmlReady($GLOBALS['UM']->getFullnameByUserId($c->getUserId()))?></A>
 <? if ($rechte) : ?>
-      <A HREF="javascript:void(0);" onClick="if (confirm('<?=dgettext('r',"Soll der Eintrag wirklich gelöscht werden?")?>')){removeCommentsItem('<?=$c->getCommentId()?>','<?=$c->getRangeId()?>'); return true;}else{return false}"><IMG SRC="images/icons/16/blue/trash.png" BORDER=0 ALT="<?=_("Eintrag löschen")?>" TITLE="<?=_("Eintrag löschen")?>"></A>
+      <A HREF="javascript:void(0);" onClick="if (confirm('<?=dgettext('r',"Soll der Eintrag wirklich gelöscht werden?")?>')){removeCommentsItem('<?=$c->getCommentId()?>','<?=$c->getRangeId()?>'); return true;}else{return false}"><IMG SRC="images/icons/16/blue/trash.png" BORDER=0 ALT="<?=_("Delete Comment")?>" TITLE="<?=_("Delete Comment")?>"></A>
 <? endif ?>
     </TD>
   </TR>
