@@ -73,9 +73,10 @@ if ($dispatch == "logout") {
 }
 
 if ($dispatch == 'do_login' || $dispatch == 'loginfromdev') {
+	
     if (($dispatch == 'do_login' && !$AUTH->authenticate($_REQUEST['username'],$_REQUEST['passwort'])) || 
         ($dispatch == 'loginfromdev' && !$AUTH->authenticateFromDev(CryptMP::decryptPrivate(base64_decode($_REQUEST['cryptloginkey'])), unserialize(base64_decode($_REQUEST['cryptinformation']))))) {
-        $USER = FALSE;
+    	$USER = FALSE;
         setMessage('error',"Login failed! Invalid username or password!");
         $dispatch = 'login';
     } else {
@@ -84,7 +85,11 @@ if ($dispatch == 'do_login' || $dispatch == 'loginfromdev') {
         ob_end_clean();
         header('HTTP/1.1 303 See Other');
         header('Location: '.$BASE_URI);
+        return false;
     }
+    echo "";
+    setMessage('error',"Login failed! Invalid username or password!");
+    $dispatch = 'login';
 }
 
 include_once 'templates/header.php';
@@ -159,13 +164,14 @@ if ($dispatch == 'login') {
 // Eingeloggter Bereich
 if ($USER) {
     if ($dispatch == 'assi') {
+    	
         $AUTH->checkPerm('author');
         $part = Request::option('part');
         if (empty($part)) $part = 1;
         $titel = trim($_REQUEST['titel']);
         $license = trim($_REQUEST['license']);
         $language = trim($_REQUEST['language']);
-        if (empty($language)) $language = 'de';
+        if (empty($language)) $language = 'en';
         $in_use = trim($_REQUEST['in_use']);
         $url = trim($_REQUEST['url']);
         $categories = $_REQUEST['c_ids'];
@@ -174,8 +180,9 @@ if ($USER) {
         $short_description = trim($_REQUEST['short_description']);
         $description = trim($_REQUEST['description']);
         $p = new Plugin();
-
+        
         if ($part == 5) {
+        	
             $p->setName($titel)
               ->setShortDescription($short_description)
               ->setDescription($description)
@@ -186,8 +193,11 @@ if ($USER) {
               ->setCategories($categories)
               ->setUrl($url)
               ->save();
-            setMessage('info',"The plugin was added, now you can upload a release!");
+              
+              setMessage('info',"The plugin was added, now you can upload a release!");
+
             $MAIL->generateNewPluginMails($USER['user_id'],$p);
+
             $GUI->showEditRelease($p->getPluginId(), FALSE);
         } else {
             $GUI->showPluginAssi($part,$titel,$license,$in_use,$url,$language,$categories,$tags,$short_description,$description);
@@ -453,9 +463,6 @@ if ($USER) {
             setMessage('error',$err);
         else
             setMessage('info',"The release was saved!");
-
-      	LastPluginChange::save();
-      	
         $dispatch = 'edit_plugin';
     }
     if ($dispatch == 'edit_plugin') {
@@ -528,7 +535,7 @@ if ($USER) {
             $p->setApproved(1);
             $p->save();
             $GLOBALS['MAIL']->generateAprovementMail($p);
-            setMessage('info',"The plugin has been activated and will notify the author!");
+            setMessage('info',"The plugin has been activated and the author is notified!");
             $dispatch = "clearing";
         }
         if ($dispatch == 'do_suspend') {
@@ -538,7 +545,7 @@ if ($USER) {
             $p->setApproved(0)
               ->save();
             $GLOBALS['MAIL']->generateSuspendMail($p);
-            setMessage('info',"The plugin has been deactivated and will notify the author!");
+            setMessage('info',"The plugin has been deactivated and the author is notified!");
             $dispatch = "clearing";
         }
         if ($dispatch == "clearing") {

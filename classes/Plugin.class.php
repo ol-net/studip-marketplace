@@ -207,7 +207,6 @@ class Plugin {
         $db = DBManager::get();
         
         $id = $this->plugin_id;
-        echo $id;
         if (!$this->plugin_id) {
         	
             $this->plugin_id = md5(uniqid(time().$this->name.$this->user_id));
@@ -217,15 +216,17 @@ class Plugin {
            
             $stmt->execute(array($this->plugin_id,$this->name,$this->short_description,$this->description,$this->mkdate,$this->license,$this->user_id,$this->in_use,$this->url,$this->language));
             // assign standard tags
+            
+            $rr = $db->query("SELECT * FROM tags")->fetchAll();
 
-            $rr = $db->query("SELECT * FROM tags WHERE owner='root'")->fetchAll();
+            //$rr = $db->query("SELECT * FROM tags WHERE owner='root'")->fetchAll();
             foreach ($rr as $r) {
-                            $qq = $db->query(sprintf("SELECT p.* FROM plugins p WHERE p.plugin_id='%s' AND LOWER(p.name) LIKE '%s' AND NOT EXISTS (SELECT ta.tag_id FROM tags_objects ta WHERE ta.tag_id='%s' AND ta.object_id=p.plugin_id)",$this->plugin_id,"%".$r['tag']."%", $r['tag_id']))->fetchAll();
-                foreach ($qq as $q)
+                        $qq = $db->query(sprintf("SELECT p.* FROM plugins p WHERE p.plugin_id='%s' AND LOWER(p.name) LIKE '%s' AND NOT EXISTS (SELECT ta.tag_id FROM tags_objects ta WHERE ta.tag_id='%s' AND ta.object_id=p.plugin_id)",$this->plugin_id,"%".$r['tag']."%", $r['tag_id']))->fetchAll();
+                        foreach ($qq as $q)
                             $db->query(sprintf("INSERT INTO tags_objects (tag_id, object_id) VALUES ('%s','%s')",$r['tag_id'],$q['plugin_id']));
-                        }
+            }
         } else {
-            $stmt = $db->prepare("UPDATE plugins SET name=?, short_description=?, description=?, license=?, in_use=?, approved=?, url=?, language=?, mkdate=UNIX_TIMESTAMP(), user_id=? WHERE plugin_id=?");
+        	$stmt = $db->prepare("UPDATE plugins SET name=?, short_description=?, description=?, license=?, in_use=?, approved=?, url=?, language=?, mkdate=UNIX_TIMESTAMP(), user_id=? WHERE plugin_id=?");
             
             $stmt->execute(array($this->name,$this->short_description,$this->description,$this->license,$this->in_use,$this->approved,$this->url,$this->language,$this->user_id,$this->plugin_id));
 

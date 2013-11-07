@@ -191,6 +191,7 @@ class Release {
                 foreach ($this->dependencies as $d) {
                         $db->query(sprintf("INSERT INTO dependencies (dependent_id, release_id) VALUES ('%s','%s')",$d, $this->release_id));
                 }
+        LastPluginChange::save();
     }
 
     public function getReleaseFromFileId($fid) {

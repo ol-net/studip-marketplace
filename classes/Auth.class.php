@@ -64,7 +64,8 @@ class Auth
             $_SESSION['sid']     = session_id();
             return true;
         }
-
+        
+        /*
         $studipauth = new StudipAuth();
         $userinformation = $studipauth->authenticate($username, $passwort);
         if ($userinformation) {
@@ -79,6 +80,7 @@ class Auth
             $_SESSION['sid'] = session_id();
             return TRUE;
         }
+        */
 
         return FALSE;
     }
