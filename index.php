@@ -69,17 +69,17 @@ if ($dispatch == 'last_change') {
 if ($dispatch == "logout") {
     Session::get()->destroySession();
     header('HTTP/1.1 303 See Other');
-    header('Location: '.$BASE_URI.'?dispatch=logoutdone');
+    header('Location: '.$BASE_URI.'?dispatch=welcome');
 }
 
-if ($dispatch == 'do_login' || $dispatch == 'loginfromdev') {
-	
-    if (($dispatch == 'do_login' && !$AUTH->authenticate($_REQUEST['username'],$_REQUEST['passwort'])) || 
-        ($dispatch == 'loginfromdev' && !$AUTH->authenticateFromDev(CryptMP::decryptPrivate(base64_decode($_REQUEST['cryptloginkey'])), unserialize(base64_decode($_REQUEST['cryptinformation']))))) {
+if ($dispatch == 'do_login') {
+    if (($dispatch == 'do_login' && !$AUTH->authenticate($_REQUEST['username'],$_REQUEST['passwort']))) {
     	$USER = FALSE;
+    	echo "false";
         setMessage('error',"Login failed! Invalid username or password!");
         $dispatch = 'login';
     } else {
+    	echo "yes";
         Session::saveSessionParams();
         setMessage('info',sprintf('You are logged in as, %s.',$UM->getFullnameByUserId($_SESSION['user_id'])));
         ob_end_clean();
@@ -87,7 +87,6 @@ if ($dispatch == 'do_login' || $dispatch == 'loginfromdev') {
         header('Location: '.$BASE_URI);
         return false;
     }
-    echo "";
     setMessage('error',"Login failed! Invalid username or password!");
     $dispatch = 'login';
 }
@@ -686,7 +685,7 @@ if ($dispatch == 'show_plugin_details') {
     $GUI->showPluginDetails($pid);
 }
 
-if (in_array($dispatch, array('welcome','marketplace','links','team','impressum','datenschutz','nutzungsbedingungen','faq','tutorials','faq'))) {
+if (in_array($dispatch, array('welcome','marketplace','matterhorn','links','team','impressum','datenschutz','nutzungsbedingungen','faq','tutorials'))) {
     History::clear();
     $GUI->showIndex($GUI->getContent($dispatch));
 }

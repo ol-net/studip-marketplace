@@ -138,7 +138,7 @@ var removeCommentsItem = function (item, rid) {
                             <ul class="level1">
                                 <li><A HREF="?dispatch=welcome">Welcome</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=welcome\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"edit\" TITLE=\"edit\"></A>" : '')?></li>
                                 <li><A HREF="?dispatch=marketplace">About the Marketplace</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=marketplace\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"edit\" TITLE=\"edit\"></A>" : '')?></li>
-                                <!--<li><A HREF="?dispatch=faq">FAQ</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=faq\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"bearbeiten\" TITLE=\"bearbeiten\"></A>" : '')?></li> -->
+                                <li><A HREF="?dispatch=matterhorn">Matterhorn Manager</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=matterhorn\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"edit\" TITLE=\"edit\"></A>" : '')?></li>
                                <!-- <li><A HREF="?dispatch=links">Weiterf&uuml;hrende Links</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=links\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"bearbeiten\" TITLE=\"bearbeiten\"></A>" : '')?></li>
                                 <li><A HREF="?dispatch=team">Das Team</A> <?=($GLOBALS['PERM']->have_perm('admin') ? "<A HREF=\"?dispatch=edit_content&key=team\"><IMG SRC=\"images/icons/pencil.png\" ALT=\"bearbeiten\" TITLE=\"bearbeiten\"></A>" : '')?></li>
                             	-->

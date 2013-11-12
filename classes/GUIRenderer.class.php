@@ -29,8 +29,8 @@ class GUIRenderer {
 	public static function showIndex($content=FALSE) {
 		$tags = $GLOBALS['DBM']->getTagCounter();
 		$template = $GLOBALS['FACTORY']->open('show_tag_cloud');
-                $template->set_attribute('tags', $tags);
-                $template->set_attribute('css_uri', $GLOBALS['BASE_URI'].'css');
+        $template->set_attribute('tags', $tags);
+        $template->set_attribute('css_uri', $GLOBALS['BASE_URI'].'css');
 		$cloud = $template->render();
 
 		$template = $GLOBALS['FACTORY']->open('start');
@@ -125,7 +125,9 @@ class GUIRenderer {
 	}
 
 	public function showLogin() {
-		echo $GLOBALS['FACTORY']->open('login')->render();
+		$this->showIndex($GLOBALS['FACTORY']->open('login')->render());
+
+		//echo $GLOBALS['FACTORY']->open('login')->render();
 	}
 
 

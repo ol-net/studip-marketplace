@@ -518,6 +518,8 @@ $img_res = ImageCreateTrueColor($newwidth, $newheight);
         $ret = array();
         $db = DBManager::get();
         $rr = $db->query(sprintf("SELECT t.tag, COUNT(t.tag_id) anz FROM tags t, tags_objects ta, plugins p, releases r WHERE ta.tag_id=t.tag_id AND ((p.plugin_id=ta.object_id AND (p.approved=1 OR (p.approved=0 AND 1=%d)))) OR (r.release_id=ta.object_id AND p.plugin_id=r.plugin_id AND (p.approved=1 OR (p.approved=0 AND 1=%d))) GROUP BY t.tag ORDER BY 2 DESC %s",($this->authenticated ? 1 : 0), ($this->authenticated ? 1 : 0), ($limit?"LIMIT 0,$limit":"")))->fetchAll();
+        //$rr = $db->query(sprintf("SELECT tag FROM tags")->fetchAll();
+
         foreach ($rr as $r) {
             $r['tag_weight'] = $this->calcTagWeight($r['tag']);
             array_push($ret, $r);
